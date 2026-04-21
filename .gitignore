@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual envs
+.venv/
+venv/
+
+# uv
+# (uv.lock is committed intentionally)
+
+# Secrets / local env
+.env
+.env.local
+
+# GitHub ingestion state (per-responder local state; never commit)
+data/github/
+
+# Plot outputs (default path is /tmp but some demos may land here)
+/tmp/polygon-frp-*.png
+*.png.tmp
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
