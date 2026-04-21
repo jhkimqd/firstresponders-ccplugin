@@ -15,15 +15,5 @@
     "skills/network-health",
     "skills/refresh-knowledge"
   ],
-  "mcpServers": ".mcp.json",
-  "dependencies": {
-    "skills": [
-      {
-        "name": "kurtosis-pos",
-        "source": "https://github.com/0xPolygon/kurtosis-pos",
-        "optional": true,
-        "note": "Optional; enables test-network spin-up for investigate-blocks. See kurtosis-pos PR #528."
-      }
-    ]
-  }
+  "mcpServers": ".mcp.json"
 }

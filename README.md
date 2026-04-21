@@ -15,8 +15,8 @@ own Claude Code subscription.
 - **Zero org token cost** — Claude Code is the harness; no BYO-key plumbing.
 - **Surface-agnostic** — responders copy/paste from the terminal into Slack / Telegram /
   Discord / tickets, matching how they already work.
-- **Native composition** — imports the `kurtosis-pos` skill and wires the internal Datadog
-  MCP server via `.mcp.json`. Neither needs re-implementation.
+- **Native composition** — bundles a `polygon-rpc` MCP, uses Claude's managed Datadog MCP,
+  and can vendor additional skills (e.g. `kurtosis-pos`) under `skills/` as needed.
 - **Code execution is first-class** — skills call Python scripts (matplotlib plots,
   concurrent RPC polling, GitHub ingestion) without a server-side agent loop.
 
@@ -35,8 +35,9 @@ See `SPEC.md` for the full architecture rationale.
 - Optional but recommended:
   - `GITHUB_TOKEN` — personal access token with `public_repo` scope. Without it,
     `refresh-knowledge` falls back to 60 req/hr unauthenticated GitHub access.
-  - Datadog API + app keys — required for `network-health` to query monitors, metrics,
-    and incidents via the internal `polygon-datadog` MCP.
+  - A Claude-managed **Datadog** integration connected to your Claude account, required
+    for `network-health` to query monitors, metrics, and incidents (see
+    [Connecting the Datadog MCP](#connecting-the-datadog-mcp) below).
 
 ---
 
@@ -44,34 +45,58 @@ See `SPEC.md` for the full architecture rationale.
 
 ```bash
 # 1. Clone
-git clone <this-repo> ~/firstresponders-ccplugin
+git clone https://github.com/<org>/firstresponders-ccplugin.git ~/firstresponders-ccplugin
 cd ~/firstresponders-ccplugin
 
-# 2. Install Python deps (creates .venv/ and uv.lock)
+# 2. Install Python deps (creates .venv/ and resolves uv.lock)
 uv sync
 
 # 3. Set up environment
 cp .env.example .env
-$EDITOR .env          # fill GITHUB_TOKEN, DATADOG_*, POLYGON_RPC_URL
+$EDITOR .env          # fill GITHUB_TOKEN, POLYGON_RPC_URL
 
-# 4. Populate the GitHub knowledge base (first run)
+# 4. Populate the GitHub knowledge base (first run — skip if you only need FAQ)
 uv run python -m polygon_frp.github_ingest --repos bor,heimdall-v2 --since 30d
 
-# 5. Point Claude Code at the plugin
+# 5. Register the plugin with Claude Code
 claude plugins install .
-# or if you prefer a symlink for iterative dev:
+# or for iterative development (symlink instead of copy):
 claude plugins link .
 ```
 
 Restart your Claude Code session (or run `/plugins` and reload) so the skills register.
+The bundled `polygon-rpc` MCP auto-starts when Claude Code launches the plugin — no
+separate install step.
 
-### Configuring the Datadog MCP
+### Connecting the Datadog MCP
 
-Open `.mcp.json` and replace the `<FILL: ...>` placeholder on `polygon-datadog.command`
-with the command or URL of the Polygon internal Datadog MCP server. The env vars are read
-from `.env` automatically when Claude Code launches the plugin.
+The `network-health` skill queries Datadog through **Claude's managed Datadog
+integration**, which is authenticated per-user through Claude (not through this plugin's
+`.mcp.json`). Each responder connects it once:
 
-> Do **not** commit production Datadog keys. `.env` is gitignored; keep it that way.
+1. In Claude Code, run `/mcp` (or visit your Claude account settings → Integrations).
+2. Locate the Datadog integration and click **Connect**.
+3. Authenticate with your Polygon Datadog account (OAuth or API keys, per your org's
+   policy).
+4. Confirm the Datadog tools appear by running `/mcp` again — you should see tools like
+   `list_monitors`, `list_incidents`, etc. under the Datadog MCP.
+
+`network-health` discovers these tools at runtime; it does not require a specific tool
+namespace. If a responder has not connected Datadog, the skill falls back to an RPC-only
+view and flags the missing signal explicitly.
+
+> This plugin's `.mcp.json` only declares `polygon-rpc` (bundled with the repo). The
+> Datadog MCP is intentionally **not** declared here — it is a per-user Claude integration,
+> not a plugin-local stdio server.
+
+### Updating the plugin
+
+```bash
+cd ~/firstresponders-ccplugin
+git pull
+uv sync                # pick up any dep changes
+# Restart your Claude Code session.
+```
 
 ---
 
@@ -84,7 +109,7 @@ Just ask Claude Code questions. The plugin auto-routes to the right skill:
 | "What's the minimum stake to become a Polygon validator?" | `answer-faq` | TF-IDF search over `data/docs/*.md`, cites file paths. |
 | "What changed in Bor this week?" | `summarize-upgrades` | Reads `data/github/bor/prs.jsonl`, groups merged PRs, cites URLs. |
 | "Plot gas prices for the last 500 blocks." | `investigate-blocks` | Concurrent RPC poll + matplotlib scatter + line-of-best-fit → PNG path. |
-| "Is Polygon healthy right now?" | `network-health` | Composes `polygon-datadog` MCP + `polygon-rpc` MCP. |
+| "Is Polygon healthy right now?" | `network-health` | Composes Claude's Datadog MCP + the bundled `polygon-rpc` MCP. |
 | "Refresh the GitHub data." | `refresh-knowledge` | Incremental pull of Bor + Heimdall-v2 commits/PRs. |
 
 See `FAQ_COVERAGE.md` for the full catalogue of questions the FAQ skill is tuned for.
@@ -102,11 +127,26 @@ uv run ruff format .                          # format
 uv run python -m polygon_frp.plot --demo      # plot smoke test → /tmp/polygon-frp-demo.png
 ```
 
-### Refreshing the knowledge base on a schedule
+### Refreshing the knowledge base
 
-Optional systemd templates live under `systemd/`. Install them under
-`~/.config/systemd/user/` and `systemctl --user enable --now firstresponders-ingest.timer`
-to refresh nightly. Not required — you can always run `refresh-knowledge` on demand.
+Just ask Claude Code: *"refresh the GitHub data"* or *"pull the latest bor PRs"* — the
+`refresh-knowledge` skill runs the incremental ingest and advances the cursor, so
+subsequent refreshes only pull new PRs/commits. Do it at the start of a shift or whenever
+you suspect a question depends on recent upgrades.
+
+### Adding more skills
+
+Skills live in `skills/<skill-name>/` and are auto-registered by entries in
+`plugin.json`'s `skills` array. To add one:
+
+1. Create `skills/my-skill/SKILL.md` with frontmatter (`name`, `description`) + workflow.
+2. Optionally add `skills/my-skill/scripts/*.py` for deterministic work.
+3. Append `"skills/my-skill"` to the `skills` array in `plugin.json`.
+4. Reload Claude Code.
+
+To **vendor** an external skill (e.g. `kurtosis-pos`), drop its directory under
+`skills/` and reference it from `plugin.json` the same way. This repo is the single
+source of truth — no cross-repo skill dependencies needed.
 
 ---
 
@@ -118,7 +158,7 @@ firstresponders-ccplugin/
 ├── README.md                     # this file
 ├── FAQ_COVERAGE.md               # catalogue of questions the FAQ skill covers
 ├── plugin.json                   # Claude Code plugin manifest
-├── .mcp.json                     # Datadog + polygon-rpc MCP wiring
+├── .mcp.json                     # polygon-rpc MCP wiring (Datadog is per-user, not here)
 ├── pyproject.toml                # uv-managed deps
 ├── skills/
 │   ├── answer-faq/
