@@ -6,7 +6,6 @@ description: |
   like "what changed in Bor recently?", "any new checkpoint logic since
   <date>?", "heimdall-v2 upgrades this month", "bor PRs touching consensus
   in the last 2 weeks", or "summarize recent heimdall merges".
-type: skill
 ---
 
 # summarize-upgrades

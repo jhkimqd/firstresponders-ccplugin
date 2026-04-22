@@ -7,7 +7,6 @@ description: |
   upgrade knowledge base", "ingest recent heimdall commits", "sync github",
   or whenever `summarize-upgrades` reports stale/missing data and the user
   wants to refresh before re-asking.
-type: skill
 ---
 
 # refresh-knowledge

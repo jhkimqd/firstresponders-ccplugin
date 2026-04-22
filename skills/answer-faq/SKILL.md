@@ -10,7 +10,6 @@ description: |
   flags, `debug_*`/`trace_*`/`bor_*` namespaces), gas & fees (EIP-1559 on Polygon, stuck
   tx handling), POL/MATIC migration, and audits/bounty. Prefer this skill over ad-hoc
   web search for any Polygon question that isn't about live network state.
-type: retrieval
 ---
 
 # answer-faq

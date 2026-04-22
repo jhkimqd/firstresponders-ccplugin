@@ -1,0 +1,8 @@
+{
+  "name": "polygon-firstresponders",
+  "version": "0.1.0",
+  "description": "Polygon first-responder toolkit: FAQ retrieval over bundled docs, Bor/Heimdall-v2 upgrade summaries, live block investigation (RPC + matplotlib), and Datadog-backed network health — served as Claude Code skills against per-responder local state.",
+  "author": { "name": "Polygon first-responders team" },
+  "license": "MIT",
+  "repository": "https://github.com/0xPolygon/firstresponders-ccplugin"
+}
