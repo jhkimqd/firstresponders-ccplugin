@@ -8,7 +8,7 @@ description: Answer "is Polygon PoS okay right now?"-style questions by composin
 A **prompt-only** skill (no script). It orchestrates live data from two MCP servers:
 
 1. **Datadog MCP** — Claude's managed Datadog integration (authenticated per responder through Claude settings). Provides monitors, incidents, active alerts, and recent metric anomalies. Tool namespace varies by integration version; discover available tools via `/mcp` or by inspection. Typical names include `list_monitors`, `search_monitors`, `list_incidents`, `query_metrics`.
-2. **`polygon-rpc`** MCP — bundled stdio server in this plugin. Provides chain-level liveness (`get_chain_status`, `get_recent_blocks`, `get_gas_usage`).
+2. **`polygon-frp-rpc`** MCP — bundled stdio server in this plugin. Provides chain-level liveness (`get_chain_status`, `get_recent_blocks`, `get_gas_usage`).
 
 ## When to trigger
 
@@ -26,8 +26,8 @@ Do **not** use this skill for:
 ## Workflow
 
 1. **Start chain-level checks in parallel with Datadog checks:**
-   - Call `polygon-rpc.get_chain_status` → latest block number, chain id, gas price, syncing flag, peer count.
-   - Call `polygon-rpc.get_recent_blocks(count=10)` → spot-check that blocks are advancing (timestamps increasing, non-zero tx_count is healthy).
+   - Call `polygon-frp-rpc.get_chain_status` → latest block number, chain id, gas price, syncing flag, peer count.
+   - Call `polygon-frp-rpc.get_recent_blocks(count=10)` → spot-check that blocks are advancing (timestamps increasing, non-zero tx_count is healthy).
    - Query `datadog` MCP tools for:
      - Active monitors in a triggered / alert state (prefer any `list_monitors` / `search_monitors` tool the MCP exposes, filtered to alerting states).
      - Open incidents (any `list_incidents` / `search_incidents` tool, filtered to `active` / `stable` / `resolved=false`).
@@ -38,7 +38,7 @@ Do **not** use this skill for:
    - **Chain liveness**: latest block, gas price gwei, peer count, syncing status.
    - **Active alerts / incidents**: bulleted list; include incident URL/ID and severity if available. If none, say "No active monitors or incidents."
    - **Recent block health**: block timestamps advancing? gas-used ratios normal? mention anomalies.
-   - **Sources**: list the MCP tools called (e.g., `datadog.list_monitors`, `polygon-rpc.get_chain_status`).
+   - **Sources**: list the MCP tools called (e.g., `datadog.list_monitors`, `polygon-frp-rpc.get_chain_status`).
 
 3. **Do not fabricate data.** If a Datadog tool isn't available or errors out, say so explicitly rather than inventing a monitor list.
 

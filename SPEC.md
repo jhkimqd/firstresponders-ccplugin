@@ -71,7 +71,7 @@ firstresponders-ccplugin/
 ├── README.md                            # install + usage for responders
 ├── FAQ_COVERAGE.md                      # ported from LIKELY_QUESTIONS.md
 ├── plugin.json                          # Claude Code plugin manifest
-├── .mcp.json                            # Datadog MCP + local polygon-rpc MCP
+├── .mcp.json                            # Datadog MCP + local polygon-frp-rpc MCP
 ├── .gitignore                           # excludes data/github/, /tmp plots, venv
 ├── pyproject.toml                       # uv-managed, Python 3.10+
 ├── skills/
@@ -85,7 +85,7 @@ firstresponders-ccplugin/
 │   │   ├── SKILL.md
 │   │   └── scripts/poll_and_plot.py     # uses rpc.py + plot.py
 │   ├── network-health/
-│   │   └── SKILL.md                     # composes Datadog MCP + polygon-rpc MCP (prompt-only; no script)
+│   │   └── SKILL.md                     # composes Datadog MCP + polygon-frp-rpc MCP (prompt-only; no script)
 │   └── refresh-knowledge/
 │       ├── SKILL.md
 │       └── scripts/ingest.py            # entry point to src/polygon_frp/github_ingest.py
@@ -132,7 +132,7 @@ Each skill is a Markdown file (`SKILL.md`) in a dedicated directory. Claude Code
 | `answer-faq` | Any static question covered in `FAQ_COVERAGE.md` (node ops, dev, validator, RPC provider, bridging, gas, POL migration). | `scripts/search.py` → `docs_index.py` TF-IDF; Claude composes cited answer. |
 | `summarize-upgrades` | "What changed in Bor / Heimdall recently?", "Any new checkpoint logic since <date>?" | `scripts/summarize.py` reads `data/github/*/prs.jsonl`, filters by date/keywords. |
 | `investigate-blocks` | "Plot gas prices for blocks X to Y", "Show tx count trend for last 500 blocks". | `scripts/poll_and_plot.py` → `rpc.py` + `plot.py` → returns PNG path at `/tmp/polygon-frp-<timestamp>.png`. |
-| `network-health` | "Is the network okay?", "Any active Polygon incidents?" | Pure prompt skill — composes Datadog MCP tools + polygon-rpc MCP tools (`get_chain_status`). |
+| `network-health` | "Is the network okay?", "Any active Polygon incidents?" | Pure prompt skill — composes Datadog MCP tools + polygon-frp-rpc MCP tools (`get_chain_status`). |
 | `refresh-knowledge` | "Refresh the GitHub data", "Pull latest bor PRs". | `scripts/ingest.py` → `github_ingest.py`. |
 
 ### 5.2 MCP wiring (`.mcp.json`)
@@ -150,7 +150,7 @@ Register two MCPs. Exact URLs/env for the internal Datadog MCP must be filled by
         "DATADOG_SITE": "${DATADOG_SITE:-datadoghq.com}"
       }
     },
-    "polygon-rpc": {
+    "polygon-frp-rpc": {
       "command": "uv",
       "args": ["run", "python", "-m", "polygon_frp.mcp_rpc"],
       "env": {
@@ -253,7 +253,7 @@ uv run python -m polygon_frp.plot --demo      # writes /tmp/polygon-frp-demo.png
 - **FAQ acceptance**: sample ≥20 questions from `FAQ_COVERAGE.md` across all four personas (node op / dev / validator / RPC provider) and assert the correct source doc is in top-3 hits from `docs_index.py`. Keep this as a living regression test.
 - **Ingestion idempotency**: running `github_ingest` twice on the same range must not duplicate rows.
 - **Plot smoke**: `render_block_chart` produces a PNG > 1KB with matplotlib's `Agg` backend.
-- **MCP smoke**: start `polygon-rpc` MCP, call `get_chain_status` via an MCP test client, verify shape.
+- **MCP smoke**: start `polygon-frp-rpc` MCP, call `get_chain_status` via an MCP test client, verify shape.
 - **End-to-end in Claude Code** (manual):
   1. "What's the minimum stake to become a Polygon validator?" → `answer-faq` cites `data/docs/nodes-and-validators.md`.
   2. "What changed in Bor this week?" → `summarize-upgrades` lists merged PRs with URLs.
@@ -297,7 +297,7 @@ Recommended as a parallel-agent team workstream sequence. Each slice ships somet
 4. **`github_ingest.py` + `refresh-knowledge` skill**: incremental pull with cursor, JSONL output, mocked tests.
 5. **`summarize-upgrades` skill**: reads JSONL, groups by week, cites PR URLs.
 6. **`plot.py` + `investigate-blocks` skill**: block-range concurrency in `rpc.py`, matplotlib Agg backend.
-7. **`mcp_rpc.py` + `.mcp.json` polygon-rpc entry**: stdio MCP exposing three tools.
+7. **`mcp_rpc.py` + `.mcp.json` polygon-frp-rpc entry**: stdio MCP exposing three tools.
 8. **`network-health` skill + Datadog MCP wiring**: prompt-only skill; plug the internal Datadog MCP command into `.mcp.json`.
 9. **kurtosis-pos dependency**: link in `plugin.json` so Claude can invoke it.
 10. **`systemd/` templates**: optional nightly timer for responders who want it.

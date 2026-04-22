@@ -24,9 +24,10 @@ from polygon_frp.rpc import get_recent_blocks as _rpc_recent_blocks
 _RPC_URL = os.environ.get("POLYGON_RPC_URL", "https://polygon.drpc.org")
 
 mcp = FastMCP(
-    "polygon-rpc",
+    "polygon-frp-rpc",
     instructions=(
-        "Polygon PoS live-network tools. Use get_chain_status for a quick "
+        "Polygon PoS live-network tools (bundled with the "
+        "polygon-firstresponders plugin). Use get_chain_status for a quick "
         "health snapshot, get_recent_blocks for per-block gas detail, and "
         "get_gas_usage for an aggregated utilization report."
     ),

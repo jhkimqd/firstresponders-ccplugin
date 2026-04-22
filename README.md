@@ -15,7 +15,7 @@ own Claude Code subscription.
 - **Zero org token cost** — Claude Code is the harness; no BYO-key plumbing.
 - **Surface-agnostic** — responders copy/paste from the terminal into Slack / Telegram /
   Discord / tickets, matching how they already work.
-- **Native composition** — bundles a `polygon-rpc` MCP, uses Claude's managed Datadog MCP,
+- **Native composition** — bundles a `polygon-frp-rpc` MCP, uses Claude's managed Datadog MCP,
   and can vendor additional skills (e.g. `kurtosis-pos`) under `skills/` as needed.
 - **Code execution is first-class** — skills call Python scripts (matplotlib plots,
   concurrent RPC polling, GitHub ingestion) without a server-side agent loop.
@@ -65,7 +65,7 @@ claude plugins link .
 ```
 
 Restart your Claude Code session (or run `/plugins` and reload) so the skills register.
-The bundled `polygon-rpc` MCP auto-starts when Claude Code launches the plugin — no
+The bundled `polygon-frp-rpc` MCP auto-starts when Claude Code launches the plugin — no
 separate install step.
 
 ### Connecting the Datadog MCP
@@ -85,7 +85,7 @@ integration**, which is authenticated per-user through Claude (not through this 
 namespace. If a responder has not connected Datadog, the skill falls back to an RPC-only
 view and flags the missing signal explicitly.
 
-> This plugin's `.mcp.json` only declares `polygon-rpc` (bundled with the repo). The
+> This plugin's `.mcp.json` only declares `polygon-frp-rpc` (bundled with the repo). The
 > Datadog MCP is intentionally **not** declared here — it is a per-user Claude integration,
 > not a plugin-local stdio server.
 
@@ -109,7 +109,7 @@ Just ask Claude Code questions. The plugin auto-routes to the right skill:
 | "What's the minimum stake to become a Polygon validator?" | `answer-faq` | TF-IDF search over `data/docs/*.md`, cites file paths. |
 | "What changed in Bor this week?" | `summarize-upgrades` | Reads `data/github/bor/prs.jsonl`, groups merged PRs, cites URLs. |
 | "Plot gas prices for the last 500 blocks." | `investigate-blocks` | Concurrent RPC poll + matplotlib scatter + line-of-best-fit → PNG path. |
-| "Is Polygon healthy right now?" | `network-health` | Composes Claude's Datadog MCP + the bundled `polygon-rpc` MCP. |
+| "Is Polygon healthy right now?" | `network-health` | Composes Claude's Datadog MCP + the bundled `polygon-frp-rpc` MCP. |
 | "Refresh the GitHub data." | `refresh-knowledge` | Incremental pull of Bor + Heimdall-v2 commits/PRs. |
 
 See `FAQ_COVERAGE.md` for the full catalogue of questions the FAQ skill is tuned for.
@@ -177,7 +177,7 @@ firstresponders-ccplugin/
 ├── README.md                     # this file
 ├── FAQ_COVERAGE.md               # catalogue of questions the FAQ skill covers
 ├── plugin.json                   # Claude Code plugin manifest
-├── .mcp.json                     # polygon-rpc MCP wiring (Datadog is per-user, not here)
+├── .mcp.json                     # polygon-frp-rpc MCP wiring (Datadog is per-user, not here)
 ├── pyproject.toml                # uv-managed deps
 ├── skills/
 │   ├── answer-faq/

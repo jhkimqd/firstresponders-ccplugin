@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "polygon-rpc": {
+    "polygon-frp-rpc": {
       "command": "uv",
       "args": ["run", "python", "-m", "polygon_frp.mcp_rpc"],
       "env": {
