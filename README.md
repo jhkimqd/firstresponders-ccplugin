@@ -43,28 +43,60 @@ See `SPEC.md` for the full architecture rationale.
 
 ## Install
 
+### Recommended — via the bundled marketplace (no clone needed)
+
+The repo ships `.claude-plugin/marketplace.json` so Claude Code can install the plugin
+directly from GitHub — no manual clone, no `uv sync` to bootstrap. Run from any shell:
+
+```bash
+# Add this repo as a marketplace (one-time per machine)
+claude plugin marketplace add 0xPolygon/firstresponders-ccplugin
+
+# Install the plugin (pins to the tagged version; re-run to pick up updates)
+claude plugin install polygon-firstresponders@polygon-firstresponders
+
+# Later: update to the latest tag
+claude plugin marketplace update polygon-firstresponders
+claude plugin update polygon-firstresponders
+```
+
+Then provision local secrets + knowledge base (the plugin can run read-only FAQ without
+these, but `refresh-knowledge`, `investigate-blocks`, and `network-health` need them):
+
+```bash
+export GITHUB_TOKEN=ghp_...                           # optional, raises GitHub rate limits
+export POLYGON_RPC_URL=https://polygon.drpc.org       # override default if desired
+
+# Populate the GitHub knowledge base — run once, then whenever you want fresh PR data
+claude /polygon-firstresponders:refresh-knowledge     # or ask Claude: "refresh the github data"
+```
+
+Restart your Claude Code session after install so skills and the bundled
+`polygon-frp-rpc` MCP register.
+
+### Alternative — clone + load locally (iterative plugin development)
+
+Use this flow if you're editing the plugin itself, not just using it:
+
 ```bash
 # 1. Clone
-git clone https://github.com/<org>/firstresponders-ccplugin.git ~/firstresponders-ccplugin
+git clone https://github.com/0xPolygon/firstresponders-ccplugin.git ~/firstresponders-ccplugin
 cd ~/firstresponders-ccplugin
 
-# 2. Install Python deps (creates .venv/ and resolves uv.lock)
+# 2. Install Python deps
 uv sync
 
 # 3. Set up environment
 cp .env.example .env
-$EDITOR .env          # fill GITHUB_TOKEN, POLYGON_RPC_URL
+$EDITOR .env
 
-# 4. Populate the GitHub knowledge base (first run — skip if you only need FAQ)
-uv run python -m polygon_frp.github_ingest --repos bor,heimdall-v2 --since 30d
-
-# 5. Register the plugin with Claude Code
-claude plugins install .
-# or for iterative development (symlink instead of copy):
-claude plugins link .
+# 4. Load ephemeral (no install — overrides anything installed):
+claude --plugin-dir ~/firstresponders-ccplugin
+# or install from the local path:
+claude plugin marketplace add ~/firstresponders-ccplugin --scope local
+claude plugin install polygon-firstresponders@polygon-firstresponders --scope local
 ```
 
-Restart your Claude Code session (or run `/plugins` and reload) so the skills register.
 The bundled `polygon-frp-rpc` MCP auto-starts when Claude Code launches the plugin — no
 separate install step.
 
@@ -91,12 +123,37 @@ view and flags the missing signal explicitly.
 
 ### Updating the plugin
 
+If you installed via the marketplace:
+
+```bash
+claude plugin marketplace update polygon-firstresponders
+claude plugin update polygon-firstresponders
+# Restart your Claude Code session.
+```
+
+If you're running a local clone:
+
 ```bash
 cd ~/firstresponders-ccplugin
 git pull
 uv sync                # pick up any dep changes
 # Restart your Claude Code session.
 ```
+
+### Publishing a new version (maintainers)
+
+1. Bump `version` in **both** `.claude-plugin/plugin.json` and
+   `.claude-plugin/marketplace.json` (keep them in sync — marketplace consumers compare
+   against the marketplace entry).
+2. `claude plugin validate .` — must pass.
+3. `uv run pytest` — must pass.
+4. Tag and push:
+   ```bash
+   git tag v0.2.0
+   git push origin main --tags
+   ```
+5. Responders get the update with `claude plugin marketplace update polygon-firstresponders`
+   then `claude plugin update polygon-firstresponders`.
 
 ---
 

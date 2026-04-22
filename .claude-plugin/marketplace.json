@@ -1,0 +1,21 @@
+{
+  "name": "polygon-firstresponders",
+  "owner": {
+    "name": "Polygon First Responders"
+  },
+  "metadata": {
+    "description": "Polygon first-responder toolkit distributed as a Claude Code plugin. Ships skills for FAQ retrieval over bundled docs, Bor/Heimdall-v2 upgrade summaries, live block investigation (RPC + matplotlib), Datadog-backed network health, and sPOL/AggLayer coverage."
+  },
+  "plugins": [
+    {
+      "name": "polygon-firstresponders",
+      "source": "./",
+      "description": "Polygon first-responder toolkit: FAQ retrieval over bundled docs, Bor/Heimdall-v2 upgrade summaries, live block investigation (RPC + matplotlib), Datadog-backed network health, and sPOL/AggLayer coverage.",
+      "version": "0.1.0",
+      "category": "polygon",
+      "tags": ["polygon", "blockchain", "faq", "first-responders", "bor", "heimdall", "agglayer"],
+      "keywords": ["polygon-chain", "polygon-cdk", "agglayer", "bor", "heimdall-v2", "spol"],
+      "license": "MIT"
+    }
+  ]
+}
