@@ -1,11 +1,3 @@
 {
-  "mcpServers": {
-    "polygon-frp-rpc": {
-      "command": "uv",
-      "args": ["run", "python", "-m", "polygon_frp.mcp_rpc"],
-      "env": {
-        "POLYGON_RPC_URL": "${POLYGON_RPC_URL:-https://polygon.drpc.org}"
-      }
-    }
-  }
+  "mcpServers": {}
 }
