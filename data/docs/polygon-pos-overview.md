@@ -1,14 +1,14 @@
-# Polygon PoS Overview
+# Polygon Chain Overview
 
-## What is Polygon PoS?
+## What is Polygon Chain?
 
-Polygon PoS (Proof of Stake) is a scalable, EVM-compatible chain secured by a decentralized validator set. It delivers fast, low-cost transactions and periodically commits state to Ethereum for finality. The current production stack is **Heimdall v2** (consensus) + **Bor** (execution) — see [`0xPolygon/heimdall-v2`](https://github.com/0xPolygon/heimdall-v2) and [`0xPolygon/bor`](https://github.com/0xPolygon/bor) for the authoritative source.
+Polygon Chain (formerly "Polygon PoS") is a scalable, EVM-compatible chain secured by a decentralized Proof-of-Stake validator set. It delivers fast, low-cost transactions and periodically commits state to Ethereum for finality. The current production stack is **Heimdall v2** (consensus) + **Bor** (execution) — see [`0xPolygon/heimdall-v2`](https://github.com/0xPolygon/heimdall-v2) and [`0xPolygon/bor`](https://github.com/0xPolygon/bor) for the authoritative source.
 
 The reference toolkit for spinning up PoS devnets end-to-end (L1 + Bor + Heimdall-v2 + bridge + optional observability) is **`kurtosis-pos`** at [github.com/0xPolygon/kurtosis-pos](https://github.com/0xPolygon/kurtosis-pos). It tracks the current client versions, genesis, and contract deployment — always prefer it over older Ansible or raw Docker recipes when setting up a test network.
 
 ## Architecture
 
-Polygon PoS uses a three-layer architecture:
+Polygon Chain uses a three-layer architecture:
 
 1. **Staking contracts on Ethereum** — validator registration, POL staking, slashing, and reward accounting live on L1.
 2. **Heimdall v2 (Consensus Layer)** — CometBFT/Cosmos-SDK-based PoS consensus engine; selects block producers, aggregates checkpoints, and submits them to Ethereum. Heimdall v1 is legacy; new deployments use v2.
@@ -48,7 +48,7 @@ Polygon PoS uses a three-layer architecture:
 | Validators | 100+ |
 | Finality | ~2 min L2 finality; Ethereum finality via checkpoints (~30 min) |
 
-## Running a Polygon PoS Node
+## Running a Polygon Chain Node
 
 ### Production / mainnet
 
@@ -95,7 +95,7 @@ Deployed components include an L1 chain, PoS contract deployment, multiple valid
 
 ## Bridging
 
-Polygon PoS has a native bridge for transferring assets between Ethereum and Polygon:
+Polygon Chain has a native bridge for transferring assets between Ethereum and Polygon:
 
 - **PoS Bridge** — ERC-20 / ERC-721 / ERC-1155.
 - **Deposit** — lock on L1, receive wrapped on L2 (~7–8 min).
@@ -105,7 +105,7 @@ See `bridging.md` for the full flow and the `AggLayer` integration path.
 
 ## POL Token
 
-- POL is the native gas + staking token on Polygon PoS.
+- POL is the native gas + staking token on Polygon Chain.
 - Used for gas fees, validator staking, and governance.
 
 ### MATIC to POL migration
@@ -122,4 +122,4 @@ Liquid staking is available via **sPOL** — Polygon's native liquid staking tok
 - `heimdall-v2` (consensus): https://github.com/0xPolygon/heimdall-v2
 - `kurtosis-pos` (devnet toolkit, authoritative for current topology): https://github.com/0xPolygon/kurtosis-pos
 - `sPOL-contracts` (liquid staking): https://github.com/0xPolygon/sPOL-contracts
-- Official Polygon PoS docs: https://docs.polygon.technology/pos/
+- Official Polygon Chain docs: https://docs.polygon.technology/pos/

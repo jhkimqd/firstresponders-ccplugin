@@ -72,9 +72,9 @@ kurtosis run --enclave cdk github.com/0xPolygon/kurtosis-cdk '{"args": {"verbosi
 
 Working example `params.yml` files live under [`.github/tests/`](https://github.com/0xPolygon/kurtosis-cdk/tree/main/.github/tests) in the `kurtosis-cdk` repo — use those as your starting template, since they track the current schema (consensus type, DA mode, gas-token address, fork ID, etc.).
 
-## CDK vs PoS
+## CDK vs Polygon Chain
 
-| Feature | Polygon PoS | Polygon CDK |
+| Feature | Polygon Chain | Polygon CDK |
 |---|---|---|
 | Consensus | PoS (Heimdall v2 + Bor) | ZK validity proofs |
 | Settlement | Ethereum (checkpoints) | Ethereum (ZK proofs) |

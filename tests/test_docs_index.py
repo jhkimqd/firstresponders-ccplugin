@@ -30,10 +30,10 @@ _INDEX = build_index()
 # Source stems match filenames in data/docs/ without the .md suffix.
 FAQ_CASES: list[tuple[str, str, str]] = [
     # --- Node Operators ---
-    ("node-op", "How do I run a Polygon PoS full node?", "nodes-and-validators"),
+    ("node-op", "How do I run a Polygon Chain full node?", "nodes-and-validators"),
     (
         "node-op",
-        "What are the minimum hardware requirements for a Polygon PoS node?",
+        "What are the minimum hardware requirements for a Polygon Chain node?",
         "nodes-and-validators",
     ),
     (
@@ -43,28 +43,28 @@ FAQ_CASES: list[tuple[str, str, str]] = [
     ),
     (
         "node-op",
-        "How do I set up an archive node on Polygon PoS?",
+        "How do I set up an archive node on Polygon Chain?",
         "nodes-and-validators",
     ),
     (
         "node-op",
-        "What public RPC endpoints are available for Polygon PoS?",
+        "What public RPC endpoints are available for Polygon Chain?",
         "rpc-endpoints",
     ),
     # --- Developers ---
     (
         "dev",
-        "How do I add Polygon PoS to MetaMask?",
+        "How do I add Polygon Chain to MetaMask?",
         "polygon-pos-overview",
     ),
     (
         "dev",
-        "What is the chain ID for Polygon PoS mainnet?",
+        "What is the chain ID for Polygon Chain mainnet?",
         "polygon-pos-overview",
     ),
     (
         "dev",
-        "How do I deploy a smart contract on Polygon PoS using Hardhat?",
+        "How do I deploy a smart contract on Polygon Chain using Hardhat?",
         "deploy-contract-pos",
     ),
     (
@@ -79,7 +79,7 @@ FAQ_CASES: list[tuple[str, str, str]] = [
     ),
     (
         "dev",
-        "How does the Polygon PoS bridge work?",
+        "How does the Polygon Chain bridge work?",
         "bridging",
     ),
     (
@@ -100,7 +100,7 @@ FAQ_CASES: list[tuple[str, str, str]] = [
     ),
     (
         "validator",
-        "How are validator rewards calculated on Polygon PoS?",
+        "How are validator rewards calculated on Polygon Chain?",
         "nodes-and-validators",
     ),
     (
@@ -110,13 +110,13 @@ FAQ_CASES: list[tuple[str, str, str]] = [
     ),
     (
         "validator",
-        "What is Heimdall's role in Polygon PoS validation?",
+        "What is Heimdall's role in Polygon Chain validation?",
         "nodes-and-validators",
     ),
     # --- RPC providers ---
     (
         "rpc-provider",
-        "What is the best free RPC endpoint for Polygon PoS?",
+        "What is the best free RPC endpoint for Polygon Chain?",
         "rpc-endpoints",
     ),
     (
@@ -126,13 +126,13 @@ FAQ_CASES: list[tuple[str, str, str]] = [
     ),
     (
         "rpc-provider",
-        "How do I handle the Polygon PoS-specific bor_ RPC namespace?",
+        "How do I handle the Polygon Chain-specific bor_ RPC namespace?",
         "rpc-endpoints",
     ),
     # --- Cross-persona (gas / POL migration) ---
     (
         "cross",
-        "What is the current base fee on Polygon PoS?",
+        "What is the current base fee on Polygon Chain?",
         "gas-fees",
     ),
     (
@@ -163,7 +163,7 @@ FAQ_CASES: list[tuple[str, str, str]] = [
     ),
     (
         "validator",
-        "Is sPOL available on Polygon PoS?",
+        "Is sPOL available on Polygon Chain?",
         "staked-pol",
     ),
 ]
@@ -250,7 +250,7 @@ def test_index_github_jsonl_adds_pr_chunks(tmp_path: Path) -> None:
                 "number": 101,
                 "title": "Add new milestone-based checkpoint verification",
                 "body": "This PR introduces a milestone subsystem for faster "
-                "checkpoint finality on Polygon PoS.",
+                "checkpoint finality on Polygon Chain.",
                 "merged_at": "2026-04-01T00:00:00Z",
                 "html_url": "https://github.com/0xPolygon/bor/pull/101",
             },

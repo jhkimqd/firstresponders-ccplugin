@@ -6,20 +6,20 @@
 
 AggLayer is Polygon's interoperability protocol that unifies liquidity and state across all connected chains. It aggregates validity proofs from multiple chains and settles them on Ethereum, enabling near-seamless cross-chain interaction with a single shared security model.
 
-## How the AggLayer bridge differs from the Polygon PoS bridge
+## How the AggLayer bridge differs from the Polygon Chain bridge
 
-The AggLayer bridge and the PoS bridge are two different bridge systems with different trust models, settlement paths, and chain coverage. The AggLayer bridge is Polygon's next-generation unified bridge; the PoS bridge is the original Polygon PoS ↔ Ethereum bridge.
+The AggLayer bridge and the PoS bridge are two different bridge systems with different trust models, settlement paths, and chain coverage. The AggLayer bridge is Polygon's next-generation unified bridge; the PoS bridge is the original Polygon Chain ↔ Ethereum bridge.
 
 | Dimension | PoS bridge | AggLayer bridge |
 |---|---|---|
-| Chains covered | Polygon PoS ↔ Ethereum only | Any AggLayer-connected chain (CDK chains and PoS as it integrates) |
+| Chains covered | Polygon Chain ↔ Ethereum only | Any AggLayer-connected chain (CDK chains and PoS as it integrates) |
 | Settlement model | Checkpoint-based (Heimdall submits a Merkle checkpoint of PoS blocks to Ethereum; exits finalize after checkpoint inclusion) | Validity-proof-based (each chain submits ZK proofs + certificates; the AggLayer aggregates them and settles on Ethereum in one proof) |
 | Withdrawal latency | ~30 minutes to ~3 hours (checkpoint cadence + L1 exit claim) | Fast: once a chain's certificate settles on L1, claims on other AggLayer chains are near-instant |
 | Security primitive | PoS validator set signing checkpoints | ZK validity proofs + **pessimistic proof** (no chain can over-withdraw more than it has deposited, even if its prover misbehaves) |
 | Liquidity | Isolated per token bridge contract | Unified — one bridge backs every connected chain, so liquidity is not fragmented |
 | Typical SDK | `@maticnetwork/maticjs` (see `0xPolygon/matic.js`) | `lxly.js` (see `0xPolygon/lxly.js`) |
 
-Rule of thumb: **use the PoS bridge** for legacy Polygon PoS ↔ Ethereum ERC-20/721/1155 transfers where an existing token binding already exists on the PoS bridge; **use the AggLayer bridge** for anything cross-CDK-chain, anything new, or anywhere you want the faster validity-proof settlement path.
+Rule of thumb: **use the PoS bridge** for legacy Polygon Chain ↔ Ethereum ERC-20/721/1155 transfers where an existing token binding already exists on the PoS bridge; **use the AggLayer bridge** for anything cross-CDK-chain, anything new, or anywhere you want the faster validity-proof settlement path.
 
 ## How It Works
 

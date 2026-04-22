@@ -1,11 +1,11 @@
 ---
 name: investigate-blocks
-description: Poll a range of Polygon PoS blocks over JSON-RPC and render a scatter plot with a line of best fit. Use when the user asks to "plot gas prices for blocks X to Y", "show tx count trend for the last N blocks", "chart gas usage over recent blocks", or any other request that maps a per-block numeric metric (gas price, gas-used ratio, tx count) to block number.
+description: Poll a range of Polygon Chain blocks over JSON-RPC and render a scatter plot with a line of best fit. Use when the user asks to "plot gas prices for blocks X to Y", "show tx count trend for the last N blocks", "chart gas usage over recent blocks", or any other request that maps a per-block numeric metric (gas price, gas-used ratio, tx count) to block number.
 ---
 
 # investigate-blocks
 
-Generates a per-block scatter plot (with a `numpy.polyfit` line of best fit) from live Polygon PoS RPC data.
+Generates a per-block scatter plot (with a `numpy.polyfit` line of best fit) from live Polygon Chain RPC data.
 
 ## When to trigger
 

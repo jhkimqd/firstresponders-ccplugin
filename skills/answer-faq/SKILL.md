@@ -1,7 +1,7 @@
 ---
 name: answer-faq
 description: |
-  Answer static Polygon PoS / CDK questions from bundled public docs. Use when the user
+  Answer static Polygon Chain / CDK questions from bundled public docs. Use when the user
   asks anything covered by FAQ_COVERAGE.md — node operations (Bor/Heimdall setup, sync,
   peers, RPC methods, snapshots, pruning), developer topics (chain IDs, deployment, gas
   estimation, bridging, WebSockets, ERC standards, tooling like Hardhat/Foundry/ethers/viem),
@@ -30,7 +30,7 @@ A concrete trigger list lives in `FAQ_COVERAGE.md`. Representative prompts:
 - "What's the minimum stake to become a Polygon validator?"
 - "How do I enable the `debug` namespace on Bor?"
 - "Does Polygon CDK support `CREATE2`?"
-- "What is the withdrawal time from Polygon PoS to Ethereum?"
+- "What is the withdrawal time from Polygon Chain to Ethereum?"
 - "How does EIP-1559 work on Polygon?"
 - "Has MATIC been replaced by POL?"
 

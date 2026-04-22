@@ -30,7 +30,7 @@ async def _rpc_call(
     client: httpx.AsyncClient | None = None,
     timeout: float = DEFAULT_TIMEOUT,
 ) -> Any:
-    """Make a JSON-RPC call to a Polygon PoS node.
+    """Make a JSON-RPC call to a Polygon Chain node.
 
     If a shared `client` is supplied it is reused (important when batching many
     calls); otherwise a short-lived client is created per call.

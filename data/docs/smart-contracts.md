@@ -2,7 +2,7 @@
 
 ## EVM Compatibility
 
-Polygon PoS is fully EVM-compatible. Any smart contract that works on Ethereum will work on Polygon without modification. This includes:
+Polygon Chain is fully EVM-compatible. Any smart contract that works on Ethereum will work on Polygon without modification. This includes:
 
 - Solidity and Vyper contracts
 - All EVM opcodes

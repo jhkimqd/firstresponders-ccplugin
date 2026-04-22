@@ -7,11 +7,11 @@ Organized by stakeholder persona to guide knowledge base coverage and intent rou
 
 ## 1. Node Operators
 
-Operators running full nodes or archive nodes on Polygon PoS.
+Operators running full nodes or archive nodes on Polygon Chain.
 
 ### Setup & Configuration
-- How do I run a Polygon PoS full node?
-- What are the minimum hardware requirements for a Polygon PoS node?
+- How do I run a Polygon Chain full node?
+- What are the minimum hardware requirements for a Polygon Chain node?
 - What are the hardware requirements for a Polygon CDK chain node?
 - Which client should I use — Bor or Erigon?
 - What is the difference between Bor and Heimdall?
@@ -20,14 +20,14 @@ Operators running full nodes or archive nodes on Polygon PoS.
 - How do I enable the JSON-RPC API on my node?
 - How do I configure WebSocket support on my node?
 - What is the recommended snapshot to bootstrap a new node quickly?
-- Where can I download a Polygon PoS chaindata snapshot?
-- How do I set up an archive node on Polygon PoS?
+- Where can I download a Polygon Chain chaindata snapshot?
+- How do I set up an archive node on Polygon Chain?
 - What is the difference between a full node and an archive node on Polygon?
 - Can I run a Polygon node on a cloud provider like AWS or GCP?
 
 ### Sync & Maintenance
 - My node is stuck syncing — how do I diagnose the issue?
-- How long does it take to sync a Polygon PoS full node from scratch?
+- How long does it take to sync a Polygon Chain full node from scratch?
 - How do I check if my node is in sync with the network?
 - What does "reorg" mean and how do I handle one?
 - How do I upgrade my Bor client without downtime?
@@ -48,7 +48,7 @@ Operators running full nodes or archive nodes on Polygon PoS.
 
 ### Chain Data & APIs
 - How do I call `eth_getLogs` on my own node?
-- Does Polygon PoS support `debug_traceTransaction`?
+- Does Polygon Chain support `debug_traceTransaction`?
 - Which RPC methods require an archive node vs a full node?
 - How do I enable the `txpool` API on my node?
 - What is the `eth_getBlockByNumber` rate limit on the public RPC?
@@ -61,48 +61,48 @@ Operators running full nodes or archive nodes on Polygon PoS.
 Engineers building dApps, smart contracts, or integrations on Polygon.
 
 ### Getting Started
-- How do I add Polygon PoS to MetaMask?
-- What is the chain ID for Polygon PoS mainnet?
+- How do I add Polygon Chain to MetaMask?
+- What is the chain ID for Polygon Chain mainnet?
 - What is the chain ID for Polygon CDK chains?
 - What is the chain ID for Polygon Amoy testnet?
 - How do I get testnet MATIC/POL on Amoy?
-- What is the difference between Polygon PoS and Polygon CDK?
+- What is the difference between Polygon Chain and Polygon CDK?
 - Which Polygon network should I build on — PoS or CDK?
 - What is Polygon CDK and when should I use it?
-- Is Polygon PoS EVM-compatible?
+- Is Polygon Chain EVM-compatible?
 - What Solidity versions are supported on Polygon CDK chains?
 
 ### Smart Contracts
-- How do I deploy a smart contract on Polygon PoS using Hardhat?
+- How do I deploy a smart contract on Polygon Chain using Hardhat?
 - How do I deploy a smart contract on a Polygon CDK chain?
 - How do I verify a smart contract on PolygonScan?
-- What is the gas limit per block on Polygon PoS?
+- What is the gas limit per block on Polygon Chain?
 - Are there any EVM opcodes not supported on Polygon CDK chains?
 - Does Polygon CDK support `CREATE2`?
 - How do I estimate gas for a transaction on Polygon?
 - My contract deployment fails on CDK but works on PoS — why?
 - How do I interact with a deployed contract using ethers.js on Polygon?
 - Can I use Foundry to deploy contracts on Polygon?
-- What is the block time on Polygon PoS?
+- What is the block time on Polygon Chain?
 - What is the block time on Polygon CDK chains?
 - How do I listen for contract events on Polygon using WebSockets?
 - What is the `PUSH0` opcode status on Polygon CDK chains?
 - How do I use Remix IDE to deploy on Polygon?
 
 ### Bridging & Cross-chain
-- How does the Polygon PoS bridge work?
-- How do I bridge ETH from Ethereum to Polygon PoS?
-- How do I bridge tokens from Polygon PoS back to Ethereum?
-- What is the withdrawal time from Polygon PoS to Ethereum?
+- How does the Polygon Chain bridge work?
+- How do I bridge ETH from Ethereum to Polygon Chain?
+- How do I bridge tokens from Polygon Chain back to Ethereum?
+- What is the withdrawal time from Polygon Chain to Ethereum?
 - How does the AggLayer bridge differ from the PoS bridge?
 - What is the LxLy bridge?
 - Can I bridge any ERC-20 token to Polygon?
-- How do I map a custom token to the Polygon PoS bridge?
+- How do I map a custom token to the Polygon Chain bridge?
 - What happens if my bridge transaction gets stuck?
 - How do I check the status of a bridge transaction?
 
 ### RPC & Data
-- What is the best free RPC endpoint for Polygon PoS?
+- What is the best free RPC endpoint for Polygon Chain?
 - What RPC endpoint should I use for Polygon CDK chains?
 - How do I use Alchemy's enhanced APIs on Polygon?
 - How do I get all transactions for a wallet address on Polygon?
@@ -118,7 +118,7 @@ Engineers building dApps, smart contracts, or integrations on Polygon.
 - What is the difference between MATIC and POL?
 - Has MATIC been replaced by POL?
 - What is the POL token contract address on Ethereum?
-- What is the POL token contract address on Polygon PoS?
+- What is the POL token contract address on Polygon Chain?
 - What is the difference between POL and sPOL?
 - What is the sPOL contract address on Ethereum?
 - How do I wrap/unwrap WMATIC on Polygon?
@@ -133,27 +133,27 @@ Engineers building dApps, smart contracts, or integrations on Polygon.
 - What Web3 libraries work best with Polygon — ethers.js, viem, or web3.js?
 - Does Thirdweb support Polygon?
 - How do I use OpenZeppelin contracts on Polygon?
-- What wallets support Polygon PoS and CDK?
+- What wallets support Polygon Chain and CDK?
 
 ---
 
 ## 3. Validators
 
-Stakers and validators securing the Polygon PoS network via the Heimdall + Bor consensus mechanism.
+Stakers and validators securing the Polygon Chain network via the Heimdall + Bor consensus mechanism.
 
 ### Becoming a Validator
-- How do I become a validator on Polygon PoS?
+- How do I become a validator on Polygon Chain?
 - What is the minimum stake required to become a validator on Polygon?
-- How many validator slots are there on Polygon PoS?
+- How many validator slots are there on Polygon Chain?
 - Is the validator set currently open or are all slots taken?
 - How do I stake POL/MATIC to become a validator?
 - What is the difference between a validator and a delegator on Polygon?
 - How do I set up a validator node vs a regular full node?
-- What is Heimdall's role in Polygon PoS validation?
-- What is Bor's role in Polygon PoS validation?
+- What is Heimdall's role in Polygon Chain validation?
+- What is Bor's role in Polygon Chain validation?
 
 ### Staking & Rewards
-- How are validator rewards calculated on Polygon PoS?
+- How are validator rewards calculated on Polygon Chain?
 - What is the current staking APY for Polygon validators?
 - How often are staking rewards distributed?
 - What is the commission rate for validators?
@@ -170,8 +170,8 @@ Stakers and validators securing the Polygon PoS network via the Heimdall + Bor c
 - Does sPOL auto-compound rewards?
 - Is sPOL a rebasing token?
 - What is the sPOL redemption / unbonding delay?
-- Is sPOL available on Polygon PoS?
-- What is the sPOLChild contract address on Polygon PoS?
+- Is sPOL available on Polygon Chain?
+- What is the sPOLChild contract address on Polygon Chain?
 - Who audited the sPOL contracts?
 - What are the main risks of holding sPOL?
 - Can validators opt in to the sPOL program, and what do they give up?
@@ -182,12 +182,12 @@ Stakers and validators securing the Polygon PoS network via the Heimdall + Bor c
 ### Slashing & Penalties
 - What actions can get a validator slashed on Polygon?
 - What is the slashing penalty for double signing?
-- Has slashing been activated on Polygon PoS mainnet?
+- Has slashing been activated on Polygon Chain mainnet?
 - How do I check if my validator has been slashed?
 - How do I recover from a slashing event?
 
 ### Checkpointing
-- What is a checkpoint on Polygon PoS?
+- What is a checkpoint on Polygon Chain?
 - How often are checkpoints submitted to Ethereum?
 - Who submits checkpoints and how are they selected?
 - What happens if a checkpoint is delayed?
@@ -204,7 +204,7 @@ Stakers and validators securing the Polygon PoS network via the Heimdall + Bor c
 - What is the difference between active and inactive validators?
 
 ### Governance
-- How does governance work on Polygon PoS?
+- How does governance work on Polygon Chain?
 - How do validators vote on governance proposals?
 - Where can I find active governance proposals for Polygon?
 - What is the Polygon Improvement Proposal (PIP) process?
@@ -217,14 +217,14 @@ Stakers and validators securing the Polygon PoS network via the Heimdall + Bor c
 Infrastructure providers serving JSON-RPC endpoints to dApps and users.
 
 ### Architecture & Infrastructure
-- What is the expected throughput (requests/sec) of the Polygon PoS RPC?
+- What is the expected throughput (requests/sec) of the Polygon Chain RPC?
 - What hardware is recommended for a high-availability Polygon RPC node?
 - How do I load balance across multiple Polygon nodes?
 - What is the recommended setup for a highly available RPC endpoint?
 - Should I run Bor or Erigon for an RPC node?
 - What are the trade-offs between Bor and Erigon for RPC workloads?
 - How do I configure Erigon for read-heavy RPC traffic?
-- Does Polygon PoS support `eth_subscribe` at scale?
+- Does Polygon Chain support `eth_subscribe` at scale?
 - How do I handle WebSocket connections at scale on Polygon?
 - What is the best caching strategy for Polygon RPC responses?
 - How do I serve `eth_getLogs` efficiently without overwhelming my node?
@@ -248,21 +248,21 @@ Infrastructure providers serving JSON-RPC endpoints to dApps and users.
 
 ### Data & Compatibility
 - Which Polygon RPC methods require an archive node?
-- Does Polygon PoS support `debug_traceTransaction`?
-- Does Polygon PoS support `trace_*` methods (OpenEthereum/Parity trace API)?
+- Does Polygon Chain support `debug_traceTransaction`?
+- Does Polygon Chain support `trace_*` methods (OpenEthereum/Parity trace API)?
 - How do I enable `debug` and `trace` namespaces on Bor?
-- Do `eth_getProof` and state proofs work on Polygon PoS?
-- How do I handle the Polygon PoS-specific `bor_*` RPC namespace?
+- Do `eth_getProof` and state proofs work on Polygon Chain?
+- How do I handle the Polygon Chain-specific `bor_*` RPC namespace?
 - What is the `bor_getSigners` method?
 - How do I serve EIP-1898 block parameter support correctly?
 - Are there any Polygon-specific deviations from the Ethereum JSON-RPC spec?
-- Does Polygon PoS return the same `eth_chainId` response as the network chain ID?
+- Does Polygon Chain return the same `eth_chainId` response as the network chain ID?
 
 ### Client Support & Upgrades
 - How do I upgrade my Bor node with zero downtime?
 - How do I coordinate Bor upgrades across a cluster of nodes?
 - How do I test a new Bor version before rolling it to production?
-- What is the process for a hard fork upgrade on Polygon PoS?
+- What is the process for a hard fork upgrade on Polygon Chain?
 - How do I get notified of upcoming Polygon hard forks or breaking changes?
 - What is the release cadence for Bor and Heimdall?
 - How do I check which Bor version my nodes are running?
@@ -280,7 +280,7 @@ Infrastructure providers serving JSON-RPC endpoints to dApps and users.
 ## Cross-Persona Questions (Commonly Asked by Multiple Groups)
 
 ### Gas & Fees
-- What is the current base fee on Polygon PoS?
+- What is the current base fee on Polygon Chain?
 - How does EIP-1559 work on Polygon?
 - What is a good `maxPriorityFeePerGas` to use right now?
 - Why did my transaction get stuck with a low gas price?
@@ -289,23 +289,23 @@ Infrastructure providers serving JSON-RPC endpoints to dApps and users.
 - What is the minimum gas price on Polygon?
 
 ### Network Status
-- Is Polygon PoS mainnet experiencing any issues right now?
-- What is the current block height on Polygon PoS?
-- What is the finality time on Polygon PoS?
+- Is Polygon Chain mainnet experiencing any issues right now?
+- What is the current block height on Polygon Chain?
+- What is the finality time on Polygon Chain?
 - What is the finality time on Polygon CDK chains?
-- How many transactions per second can Polygon PoS handle?
+- How many transactions per second can Polygon Chain handle?
 - Where can I find real-time Polygon network stats?
 
 ### MATIC / POL Migration
 - What is the MATIC to POL migration?
 - Do I need to do anything to convert my MATIC to POL?
 - What is the POL token contract address?
-- Is MATIC still accepted for gas on Polygon PoS?
+- Is MATIC still accepted for gas on Polygon Chain?
 - What is the timeline for the MATIC → POL transition?
 - Will MATIC stop working on Polygon?
 
 ### Security & Audits
-- Has Polygon PoS been audited?
+- Has Polygon Chain been audited?
 - Has Polygon CDK been audited?
 - Where can I find Polygon's security audit reports?
 - What should I do if I find a vulnerability in Polygon?

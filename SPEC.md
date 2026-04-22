@@ -6,7 +6,7 @@
 
 ## 1. Context & Motivation
 
-Polygon's first responders handle incoming user questions about the Polygon PoS stack. Questions arrive across many channels (Slack, Telegram, Discord, support tickets) and responders copy/paste answers regardless of where the bot lives. Scope of questions spans:
+Polygon's first responders handle incoming user questions about the Polygon Chain stack. Questions arrive across many channels (Slack, Telegram, Discord, support tickets) and responders copy/paste answers regardless of where the bot lives. Scope of questions spans:
 
 - **Static FAQ** — node ops, dev questions, validator ops, RPC provider tuning, bridging, gas/fees, POL migration. See `FAQ_COVERAGE.md` (ported from `polygon-chatbot/LIKELY_QUESTIONS.md`) for the full catalogue.
 - **Cutting-edge state beyond public docs** — recent commits and merged PRs in [`0xPolygon/bor`](https://github.com/0xPolygon/bor) and [`0xPolygon/heimdall-v2`](https://github.com/0xPolygon/heimdall-v2). Needed because upgrades ship faster than public docs.

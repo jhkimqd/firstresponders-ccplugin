@@ -1,13 +1,13 @@
-# Deploying a Smart Contract on Polygon PoS
+# Deploying a Smart Contract on Polygon Chain
 
 ## Overview
 
-Polygon PoS (Proof of Stake) is an EVM-compatible sidechain that offers faster and cheaper transactions than Ethereum mainnet. Deploying a smart contract on Polygon PoS is nearly identical to deploying on Ethereum, since Polygon PoS is fully EVM-compatible.
+Polygon Chain (formerly "Polygon PoS") is a Proof-of-Stake-secured, EVM-compatible chain that offers faster and cheaper transactions than Ethereum mainnet. Deploying a smart contract on Polygon Chain is nearly identical to deploying on Ethereum, since Polygon Chain is fully EVM-compatible.
 
 ## Prerequisites
 
 - A wallet with POL (formerly MATIC) tokens for gas fees
-- An RPC endpoint for Polygon PoS (public or private)
+- An RPC endpoint for Polygon Chain (public or private)
 - Your compiled smart contract (Solidity)
 - A deployment tool: Hardhat, Foundry, or Remix
 
@@ -15,7 +15,7 @@ Polygon PoS (Proof of Stake) is an EVM-compatible sidechain that offers faster a
 
 | Parameter | Value |
 |-----------|-------|
-| Network Name | Polygon PoS |
+| Network Name | Polygon Chain |
 | Chain ID | 137 |
 | Currency | POL |
 | RPC URL | https://polygon.drpc.org |
@@ -121,12 +121,12 @@ forge verify-contract DEPLOYED_ADDRESS src/MyContract.sol:MyContract \
 2. Write or import your contract
 3. Compile the contract
 4. In the "Deploy" tab, select "Injected Provider - MetaMask"
-5. Make sure MetaMask is connected to Polygon PoS network
+5. Make sure MetaMask is connected to Polygon Chain network
 6. Click "Deploy" and confirm the transaction in MetaMask
 
 ## Gas Fees
 
-Gas fees on Polygon PoS are significantly lower than Ethereum mainnet. A typical contract deployment costs fractions of a cent to a few cents in POL tokens. You can check current gas prices at https://polygonscan.com/gastracker.
+Gas fees on Polygon Chain are significantly lower than Ethereum mainnet. A typical contract deployment costs fractions of a cent to a few cents in POL tokens. You can check current gas prices at https://polygonscan.com/gastracker.
 
 ## Best Practices
 
@@ -134,4 +134,4 @@ Gas fees on Polygon PoS are significantly lower than Ethereum mainnet. A typical
 - **Verify your contracts** on Polygonscan for transparency
 - **Use a private RPC endpoint** for production deployments (Alchemy, Infura, QuickNode)
 - **Secure your private keys** — use environment variables or hardware wallets, never hardcode them
-- **Test thoroughly** — Polygon PoS has 2-second block times, so testing is fast
+- **Test thoroughly** — Polygon Chain has 2-second block times, so testing is fast

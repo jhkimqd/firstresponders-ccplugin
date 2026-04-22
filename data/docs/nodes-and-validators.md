@@ -1,4 +1,4 @@
-# Running Polygon PoS Nodes and Validators
+# Running Polygon Chain Nodes and Validators
 
 > **Authoritative sources.** Node software: [`0xPolygon/bor`](https://github.com/0xPolygon/bor) (execution) and [`0xPolygon/heimdall-v2`](https://github.com/0xPolygon/heimdall-v2) (consensus). For local devnets use [`0xPolygon/kurtosis-pos`](https://github.com/0xPolygon/kurtosis-pos). For mainnet operator workflows, the [`0xPolygon/matic-cli`](https://github.com/0xPolygon/matic-cli) tool and the official docs at [docs.polygon.technology/pos/](https://docs.polygon.technology/pos/) are the up-to-date references. Older setups referencing `maticnetwork/node-ansible`, `maticnetwork/polygon-edge`, `maticnetwork/heimdall` (v1), or generic `maticnetwork/*` Docker images are **deprecated** — `polygon-edge` in particular has been removed.
 
@@ -6,7 +6,7 @@
 
 ### Full Node
 
-A full node syncs and validates all Polygon PoS blocks:
+A full node syncs and validates all Polygon Chain blocks:
 
 - Stores current state and recent block history.
 - Provides RPC endpoints for querying the chain.

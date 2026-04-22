@@ -20,7 +20,7 @@ sPOL is Polygon's native **liquid staking token** for POL, launched 2026-04-14. 
 
 - **Auto-compounding**: rewards accrue via a rising sPOL↔POL exchange rate, not a rebasing balance. Users hold a fixed number of sPOL; its redemption value in POL grows over time.
 - **Composable**: sPOL is a plain ERC-20 (with EIP-2612 permit). Usable as collateral or LP without waiting for unbonding.
-- **Cross-chain**: sPOL is bridged to Polygon PoS as `sPOLChild`, with cached exchange-rate updates relayed via the protocol's cross-chain messenger.
+- **Cross-chain**: sPOL is bridged to Polygon Chain as `sPOLChild`, with cached exchange-rate updates relayed via the protocol's cross-chain messenger.
 - **Priority-fee share**: validators participating in the sPOL program agree to return a portion of priority fees to delegators.
 - **Redeemable at any time**: users can redeem sPOL for POL + accrued rewards through the Polygon staking portal at staking.polygon.technology, subject to the protocol's unbonding queue.
 - **Day-one liquidity**: Uniswap v4 AMM pools for sPOL/POL went live at launch. Polygon Labs committed 10M POL from treasury on day one and up to 100M progressively to seed liquidity.
@@ -47,8 +47,8 @@ Six core contracts (see `sPOL-contracts` for source + interfaces):
 | `sPOLController` | L1 (Ethereum) | Validator delegation, POL↔sPOL conversion, reward compounding, unbonding queue |
 | `sPOL` | L1 | ERC-20 (EIP-2612 permit); `mint`/`burn` gated to the controller |
 | `sPOLMessenger` | L1 | Relays exchange-rate updates, processes cross-chain proofs |
-| `sPOLChild` | L2 (Polygon PoS) | L2 sPOL token; supports buy operations using cached exchange rate |
-| `PolBridger` | L1 + L2 | Moves POL across the Polygon PoS bridge |
+| `sPOLChild` | L2 (Polygon Chain) | L2 sPOL token; supports buy operations using cached exchange rate |
+| `PolBridger` | L1 + L2 | Moves POL across the Polygon Chain bridge |
 | `MsgCoder` | shared | Cross-chain message encoding/decoding |
 
 High-level flow:
@@ -73,7 +73,7 @@ Verify on-chain before quoting to users; addresses from the `sPOL-contracts` REA
 | `sPOLMessenger` | `0x0356e303B375D5a11D9Eb7d57DBF544FeE6972C9` |
 | `PolBridger` | `0x71663898Df7470e3b64d52663Ff975895E9b06E8` |
 
-**Polygon PoS**
+**Polygon Chain**
 
 | Contract | Address |
 |---|---|
@@ -87,7 +87,7 @@ Testnet (Sepolia + Amoy) addresses are listed in the contracts README.
 1. Visit https://staking.polygon.technology with a wallet holding POL on Ethereum.
 2. Select the sPOL route.
 3. Approve POL and deposit — receive sPOL at the current exchange rate.
-4. Optionally bridge sPOL to Polygon PoS via the protocol's messenger or use it directly in L1 DeFi.
+4. Optionally bridge sPOL to Polygon Chain via the protocol's messenger or use it directly in L1 DeFi.
 5. To unstake: initiate redemption for sPOL → queued in the unbonding queue → claim POL after the delay window.
 
 ## Developer / reviewer workflow
@@ -129,8 +129,8 @@ Visit https://staking.polygon.technology with a wallet holding POL on Ethereum, 
 ### What is the sPOL contract address on Ethereum?
 The sPOL ERC-20 token contract address on Ethereum is `0x3B790d651e950497c7723D47B24E6f61534f7969`. Other sPOL addresses on Ethereum: `sPOLController` at `0xEaadA411F2600570796c341552b9869DA708a28B`, `sPOLMessenger` at `0x0356e303B375D5a11D9Eb7d57DBF544FeE6972C9`, `PolBridger` at `0x71663898Df7470e3b64d52663Ff975895E9b06E8`.
 
-### Is sPOL available on Polygon PoS?
-Yes, sPOL is available on Polygon PoS. The sPOL token on Polygon PoS is `sPOLChild`, deployed at `0xd1CD49A08AeF3Af93457aEc17C786C2b7F48eCd7`. sPOL on Polygon PoS uses a cached sPOL-to-POL exchange rate relayed from Ethereum.
+### Is sPOL available on Polygon Chain?
+Yes, sPOL is available on Polygon Chain. The sPOL token on Polygon Chain is `sPOLChild`, deployed at `0xd1CD49A08AeF3Af93457aEc17C786C2b7F48eCd7`. sPOL on Polygon Chain uses a cached sPOL-to-POL exchange rate relayed from Ethereum.
 
 ### What is the sPOL redemption / unbonding delay?
 The sPOL redemption delay is governed by the `sPOLController` unbonding queue parameters. Refer to the live contract or the Polygon staking portal at https://staking.polygon.technology for the current value.

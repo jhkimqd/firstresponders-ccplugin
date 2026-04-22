@@ -2,7 +2,7 @@
 
 ## Public RPC Endpoints
 
-### Polygon PoS Mainnet
+### Polygon Chain Mainnet
 
 | Provider | URL | Rate Limit |
 |----------|-----|-----------|
@@ -33,8 +33,8 @@ For production dApps, use a private RPC provider:
 
 ### MetaMask
 
-Add Polygon PoS manually:
-- Network Name: Polygon PoS
+Add Polygon Chain manually:
+- Network Name: Polygon Chain
 - RPC URL: https://polygon.drpc.org
 - Chain ID: 137
 - Currency Symbol: POL

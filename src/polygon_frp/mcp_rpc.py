@@ -26,7 +26,7 @@ _RPC_URL = os.environ.get("POLYGON_RPC_URL", "https://polygon.drpc.org")
 mcp = FastMCP(
     "polygon-frp-rpc",
     instructions=(
-        "Polygon PoS live-network tools (bundled with the "
+        "Polygon Chain live-network tools (bundled with the "
         "polygon-firstresponders plugin). Use get_chain_status for a quick "
         "health snapshot, get_recent_blocks for per-block gas detail, and "
         "get_gas_usage for an aggregated utilization report."
@@ -36,7 +36,7 @@ mcp = FastMCP(
 
 @mcp.tool(name="get_chain_status")
 async def get_chain_status() -> str:
-    """Get the current status of the Polygon PoS network.
+    """Get the current status of the Polygon Chain network.
 
     Returns the latest block number, chain ID, gas price, sync status,
     and peer count from the configured Polygon RPC endpoint.
@@ -50,7 +50,7 @@ async def get_chain_status() -> str:
     peers = str(status["peer_count"]) if status["peer_count"] is not None else "N/A"
 
     return (
-        f"Polygon PoS Network Status:\n"
+        f"Polygon Chain Network Status:\n"
         f"- Latest block: {status['latest_block']:,}\n"
         f"- Chain ID: {status['chain_id']}\n"
         f"- Gas price: {status['gas_price_gwei']:.2f} Gwei\n"
@@ -82,7 +82,7 @@ async def get_recent_blocks(count: int = 10) -> str:
 
 @mcp.tool(name="get_gas_usage")
 async def get_gas_usage(block_count: int = 10) -> str:
-    """Get gas utilization for recent Polygon PoS blocks.
+    """Get gas utilization for recent Polygon Chain blocks.
 
     Shows gas used vs gas limit for each block and the average utilization.
 

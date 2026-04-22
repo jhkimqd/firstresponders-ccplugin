@@ -6,17 +6,17 @@
 
 There are two bridging families depending on what you're moving and between which chains:
 
-1. **PoS Bridge** — the classic Polygon PoS ↔ Ethereum bridge. Use for ERC-20 / ERC-721 / ERC-1155 movement between L1 Ethereum and Polygon PoS. Current SDK: `0xPolygon/matic.js`.
+1. **PoS Bridge** — the classic Polygon Chain ↔ Ethereum bridge. Use for ERC-20 / ERC-721 / ERC-1155 movement between L1 Ethereum and Polygon Chain. Current SDK: `0xPolygon/matic.js`.
 2. **AggLayer Unified Bridge** — cross-chain messaging + liquidity across AggLayer-connected chains (CDK chains + PoS as they integrate). Current SDK: `0xPolygon/lxly.js` (pronounced "LxLy"). Preferred for anything CDK-facing or multi-chain.
 
 ## PoS Bridge
 
-### Deposit (Ethereum → Polygon PoS)
+### Deposit (Ethereum → Polygon Chain)
 
 - Lock tokens on L1, mirrored/minted on Polygon.
 - Takes ~7–8 minutes end-to-end.
 
-### Withdraw (Polygon PoS → Ethereum)
+### Withdraw (Polygon Chain → Ethereum)
 
 - Burn on Polygon, then claim on Ethereum **after checkpoint inclusion**.
 - End-to-end ~30 min to ~3 h depending on checkpoint cadence and L1 gas.

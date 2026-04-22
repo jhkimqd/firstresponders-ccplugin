@@ -1,6 +1,6 @@
 ---
 name: network-health
-description: Answer "is Polygon PoS okay right now?"-style questions by composing live Datadog monitors/incidents with Polygon chain status. Use when the user asks "is the network okay?", "is Polygon down?", "any active Polygon incidents?", "are there ongoing issues on Bor/Heimdall?", or similar live-health queries.
+description: Answer "is Polygon Chain okay right now?"-style questions by composing live Datadog monitors/incidents with Polygon chain status. Use when the user asks "is the network okay?", "is Polygon down?", "any active Polygon incidents?", "are there ongoing issues on Bor/Heimdall?", or similar live-health queries.
 ---
 
 # network-health

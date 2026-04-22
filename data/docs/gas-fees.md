@@ -1,12 +1,12 @@
-# Gas Fees on Polygon PoS
+# Gas Fees on Polygon Chain
 
 ## Overview
 
-Gas fees on Polygon PoS are paid in POL (formerly MATIC) and are significantly lower than Ethereum mainnet. Typical transactions cost fractions of a cent.
+Gas fees on Polygon Chain are paid in POL (formerly MATIC) and are significantly lower than Ethereum mainnet. Typical transactions cost fractions of a cent.
 
-## How Gas Works on Polygon PoS
+## How Gas Works on Polygon Chain
 
-Gas on Polygon PoS works the same way as Ethereum since Polygon is EVM-compatible:
+Gas on Polygon Chain works the same way as Ethereum since Polygon is EVM-compatible:
 
 - **Gas Limit**: Maximum amount of gas units a transaction can consume
 - **Gas Price**: Price per gas unit in Gwei (1 Gwei = 0.000000001 POL)
@@ -23,7 +23,7 @@ Gas on Polygon PoS works the same way as Ethereum since Polygon is EVM-compatibl
 
 ## EIP-1559 on Polygon
 
-Polygon PoS supports EIP-1559 (London fork):
+Polygon Chain supports EIP-1559 (London fork):
 
 - **Base Fee**: Algorithmically determined, burned after each transaction
 - **Priority Fee (Tip)**: Goes to validators as an incentive
