@@ -145,6 +145,27 @@ FAQ_CASES: list[tuple[str, str, str]] = [
         "What is the MATIC to POL migration?",
         "polygon-pos-overview",
     ),
+    # --- Liquid staking (sPOL) ---
+    (
+        "validator",
+        "What is sPOL?",
+        "staked-pol",
+    ),
+    (
+        "validator",
+        "How is sPOL different from native POL staking?",
+        "staked-pol",
+    ),
+    (
+        "dev",
+        "What is the sPOL contract address on Ethereum?",
+        "staked-pol",
+    ),
+    (
+        "validator",
+        "Is sPOL available on Polygon PoS?",
+        "staked-pol",
+    ),
 ]
 
 

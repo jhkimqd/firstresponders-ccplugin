@@ -119,6 +119,8 @@ Engineers building dApps, smart contracts, or integrations on Polygon.
 - Has MATIC been replaced by POL?
 - What is the POL token contract address on Ethereum?
 - What is the POL token contract address on Polygon PoS?
+- What is the difference between POL and sPOL?
+- What is the sPOL contract address on Ethereum?
 - How do I wrap/unwrap WMATIC on Polygon?
 - Does Polygon support ERC-1155 tokens?
 - How do I deploy an ERC-721 NFT on Polygon?
@@ -159,6 +161,23 @@ Stakers and validators securing the Polygon PoS network via the Heimdall + Bor c
 - How do I claim staking rewards?
 - What is the unbonding period for validators?
 - What happens to my stake if I miss blocks?
+
+### Liquid Staking (sPOL)
+- What is sPOL?
+- How is sPOL different from native POL staking?
+- How do I get sPOL?
+- Where do I stake POL for sPOL?
+- Does sPOL auto-compound rewards?
+- Is sPOL a rebasing token?
+- What is the sPOL redemption / unbonding delay?
+- Is sPOL available on Polygon PoS?
+- What is the sPOLChild contract address on Polygon PoS?
+- Who audited the sPOL contracts?
+- What are the main risks of holding sPOL?
+- Can validators opt in to the sPOL program, and what do they give up?
+- Where does sPOL have liquidity at launch?
+- When did sPOL launch?
+- Does sPOL replace native POL staking?
 
 ### Slashing & Penalties
 - What actions can get a validator slashed on Polygon?

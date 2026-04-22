@@ -105,13 +105,21 @@ See `bridging.md` for the full flow and the `AggLayer` integration path.
 
 ## POL Token
 
-- POL replaced MATIC 1:1 as the native gas + staking token.
+- POL is the native gas + staking token on Polygon PoS.
 - Used for gas fees, validator staking, and governance.
-- Migration is handled automatically by most exchanges and wallets; see the [POL migration docs](https://polygon.technology/pol-token) for edge cases.
+
+### MATIC to POL migration
+
+POL replaced MATIC as the native Polygon token in a 1:1 upgrade (the MATIC to POL migration). The MATIC to POL migration is handled automatically by most exchanges and wallets; see the [POL migration docs](https://polygon.technology/pol-token) for edge cases and the timeline for the MATIC to POL transition.
+
+### Liquid staking (sPOL)
+
+Liquid staking is available via **sPOL** — Polygon's native liquid staking token (launched 2026-04-14). Stakers deposit POL on Ethereum and receive sPOL, a composable ERC-20 whose POL-redemption rate grows as rewards accrue. See `staked-pol.md` and [`0xPolygon/sPOL-contracts`](https://github.com/0xPolygon/sPOL-contracts).
 
 ## References
 
 - `bor` (execution client): https://github.com/0xPolygon/bor
 - `heimdall-v2` (consensus): https://github.com/0xPolygon/heimdall-v2
 - `kurtosis-pos` (devnet toolkit, authoritative for current topology): https://github.com/0xPolygon/kurtosis-pos
+- `sPOL-contracts` (liquid staking): https://github.com/0xPolygon/sPOL-contracts
 - Official Polygon PoS docs: https://docs.polygon.technology/pos/
