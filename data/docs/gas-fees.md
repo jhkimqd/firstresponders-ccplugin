@@ -44,7 +44,7 @@ const tx = {
 ### Using ethers.js
 
 ```javascript
-const provider = new ethers.JsonRpcProvider("https://polygon-rpc.com");
+const provider = new ethers.JsonRpcProvider("https://polygon.drpc.org");
 
 // Get current gas price
 const feeData = await provider.getFeeData();
@@ -62,12 +62,12 @@ console.log("Estimated gas:", gasEstimate.toString());
 
 ```bash
 # Get current gas price
-curl -X POST https://polygon-rpc.com \
+curl -X POST https://polygon.drpc.org \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":1}'
 
 # Estimate gas
-curl -X POST https://polygon-rpc.com \
+curl -X POST https://polygon.drpc.org \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"to":"0x...","data":"0x..."}],"id":1}'
 ```

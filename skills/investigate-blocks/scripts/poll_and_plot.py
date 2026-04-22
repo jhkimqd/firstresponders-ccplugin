@@ -51,7 +51,7 @@ async def _resolve_range(rpc_url: str, args: argparse.Namespace) -> tuple[int, i
 
 
 async def _run(args: argparse.Namespace) -> int:
-    rpc_url = os.environ.get("POLYGON_RPC_URL", "https://polygon-rpc.com")
+    rpc_url = os.environ.get("POLYGON_RPC_URL", "https://polygon.drpc.org")
 
     try:
         start, end = await _resolve_range(rpc_url, args)

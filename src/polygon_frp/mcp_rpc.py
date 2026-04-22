@@ -21,7 +21,7 @@ from mcp.server.fastmcp import FastMCP
 from polygon_frp.rpc import get_chain_status as _rpc_chain_status
 from polygon_frp.rpc import get_recent_blocks as _rpc_recent_blocks
 
-_RPC_URL = os.environ.get("POLYGON_RPC_URL", "https://polygon-rpc.com")
+_RPC_URL = os.environ.get("POLYGON_RPC_URL", "https://polygon.drpc.org")
 
 mcp = FastMCP(
     "polygon-rpc",

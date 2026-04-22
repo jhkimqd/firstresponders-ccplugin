@@ -154,7 +154,7 @@ Register two MCPs. Exact URLs/env for the internal Datadog MCP must be filled by
       "command": "uv",
       "args": ["run", "python", "-m", "polygon_frp.mcp_rpc"],
       "env": {
-        "POLYGON_RPC_URL": "${POLYGON_RPC_URL:-https://polygon-rpc.com}"
+        "POLYGON_RPC_URL": "${POLYGON_RPC_URL:-https://polygon.drpc.org}"
       }
     }
   }

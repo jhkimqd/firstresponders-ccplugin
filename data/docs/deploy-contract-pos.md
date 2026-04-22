@@ -18,7 +18,7 @@ Polygon PoS (Proof of Stake) is an EVM-compatible sidechain that offers faster a
 | Network Name | Polygon PoS |
 | Chain ID | 137 |
 | Currency | POL |
-| RPC URL | https://polygon-rpc.com |
+| RPC URL | https://polygon.drpc.org |
 | Block Explorer | https://polygonscan.com |
 | Testnet (Amoy) Chain ID | 80002 |
 | Testnet RPC | https://rpc-amoy.polygon.technology |
@@ -43,7 +43,7 @@ module.exports = {
   solidity: "0.8.24",
   networks: {
     polygon: {
-      url: "https://polygon-rpc.com",
+      url: "https://polygon.drpc.org",
       chainId: 137,
       accounts: [process.env.PRIVATE_KEY],
     },
@@ -101,7 +101,7 @@ foundryup
 ### 2. Deploy
 
 ```bash
-forge create --rpc-url https://polygon-rpc.com \
+forge create --rpc-url https://polygon.drpc.org \
   --private-key $PRIVATE_KEY \
   src/MyContract.sol:MyContract \
   --constructor-args arg1 arg2

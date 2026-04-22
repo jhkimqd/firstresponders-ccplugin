@@ -6,7 +6,7 @@
 
 | Provider | URL | Rate Limit |
 |----------|-----|-----------|
-| Polygon | https://polygon-rpc.com | Moderate |
+| Polygon | https://polygon.drpc.org | Moderate |
 | Ankr | https://rpc.ankr.com/polygon | Moderate |
 | 1RPC | https://1rpc.io/matic | Moderate |
 
@@ -35,7 +35,7 @@ For production dApps, use a private RPC provider:
 
 Add Polygon PoS manually:
 - Network Name: Polygon PoS
-- RPC URL: https://polygon-rpc.com
+- RPC URL: https://polygon.drpc.org
 - Chain ID: 137
 - Currency Symbol: POL
 - Block Explorer: https://polygonscan.com
@@ -46,7 +46,7 @@ Add Polygon PoS manually:
 const { ethers } = require("ethers");
 
 // Public RPC
-const provider = new ethers.JsonRpcProvider("https://polygon-rpc.com");
+const provider = new ethers.JsonRpcProvider("https://polygon.drpc.org");
 
 // Private RPC (Alchemy)
 const provider = new ethers.JsonRpcProvider(
@@ -62,7 +62,7 @@ console.log("Latest block:", block);
 
 ```javascript
 const Web3 = require("web3");
-const web3 = new Web3("https://polygon-rpc.com");
+const web3 = new Web3("https://polygon.drpc.org");
 
 const blockNumber = await web3.eth.getBlockNumber();
 console.log("Latest block:", blockNumber);
@@ -76,7 +76,7 @@ import { polygon } from "viem/chains";
 
 const client = createPublicClient({
   chain: polygon,
-  transport: http("https://polygon-rpc.com"),
+  transport: http("https://polygon.drpc.org"),
 });
 
 const blockNumber = await client.getBlockNumber();
