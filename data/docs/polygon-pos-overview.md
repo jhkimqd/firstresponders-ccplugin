@@ -2,101 +2,116 @@
 
 ## What is Polygon PoS?
 
-Polygon PoS (Proof of Stake) is a commit chain — a scalable EVM-compatible sidechain secured by a decentralized set of validators who use the PoS consensus mechanism. It provides fast and low-cost transactions while leveraging Ethereum for security through periodic checkpoints.
+Polygon PoS (Proof of Stake) is a scalable, EVM-compatible chain secured by a decentralized validator set. It delivers fast, low-cost transactions and periodically commits state to Ethereum for finality. The current production stack is **Heimdall v2** (consensus) + **Bor** (execution) — see [`0xPolygon/heimdall-v2`](https://github.com/0xPolygon/heimdall-v2) and [`0xPolygon/bor`](https://github.com/0xPolygon/bor) for the authoritative source.
+
+The reference toolkit for spinning up PoS devnets end-to-end (L1 + Bor + Heimdall-v2 + bridge + optional observability) is **`kurtosis-pos`** at [github.com/0xPolygon/kurtosis-pos](https://github.com/0xPolygon/kurtosis-pos). It tracks the current client versions, genesis, and contract deployment — always prefer it over older Ansible or raw Docker recipes when setting up a test network.
 
 ## Architecture
 
 Polygon PoS uses a three-layer architecture:
 
-1. **Staking contracts on Ethereum** — Validator management and staking on Ethereum mainnet
-2. **Heimdall (Consensus Layer)** — A Tendermint-based PoS consensus engine that selects block producers, validates and commits checkpoints to Ethereum
-3. **Bor (Block Production Layer)** — A modified Geth client that produces blocks on the Polygon chain
+1. **Staking contracts on Ethereum** — validator registration, POL staking, slashing, and reward accounting live on L1.
+2. **Heimdall v2 (Consensus Layer)** — CometBFT/Cosmos-SDK-based PoS consensus engine; selects block producers, aggregates checkpoints, and submits them to Ethereum. Heimdall v1 is legacy; new deployments use v2.
+3. **Bor (Execution Layer)** — geth-derived EVM client that produces blocks driven by Heimdall's span selection.
 
 ## Key Features
 
-- **EVM Compatibility**: Full compatibility with Ethereum smart contracts, tools, and wallets
-- **Fast Block Times**: ~2 second block times
-- **Low Gas Fees**: Gas fees are typically fractions of a cent
-- **Checkpointing**: Periodic checkpoints to Ethereum for security
-- **Large Validator Set**: 100+ validators securing the network
-- **POL Token**: Used for staking, gas fees, and governance (formerly MATIC)
+- **EVM Compatibility** — Ethereum smart contracts, tooling (Hardhat/Foundry/ethers/viem), and wallets work unchanged.
+- **Fast Block Times** — ~2 second blocks.
+- **Low Gas Fees** — typically fractions of a cent.
+- **Checkpointing** — periodic Merkle commitments to Ethereum for L1-verifiable state.
+- **Large Validator Set** — 100+ validators.
+- **POL Token** — native gas + staking asset (migrated 1:1 from MATIC).
 
 ## Consensus Mechanism
 
 ### Block Production (Bor)
 
-- Validators are selected as block producers in spans (groups of blocks)
-- Block producers create blocks and broadcast them to the network
-- Block time is approximately 2 seconds
+- Validators are elected as block producers in **spans** (groups of blocks).
+- Producers create blocks and gossip them to the network.
+- Block time is ~2 seconds.
 
-### Checkpointing (Heimdall)
+### Checkpointing (Heimdall v2)
 
-- Heimdall validators periodically submit checkpoints to Ethereum
-- Checkpoints contain a Merkle root hash of all blocks since the last checkpoint
-- This ensures that Polygon's state can be verified on Ethereum
-- Checkpoint interval is approximately 30 minutes
+- Heimdall validators periodically submit checkpoints to Ethereum.
+- Each checkpoint contains a Merkle root of all Bor blocks since the previous checkpoint.
+- Checkpoint cadence is approximately 30 minutes and finalizes L2 state on L1.
 
 ## Network Specifications
 
 | Specification | Value |
-|--------------|-------|
+|---|---|
 | Chain ID | 137 (Mainnet), 80002 (Amoy Testnet) |
 | Block Time | ~2 seconds |
 | Gas Token | POL (formerly MATIC) |
-| Consensus | PoS (Tendermint + Bor) |
+| Consensus | Heimdall v2 (CometBFT) + Bor (EVM) |
 | Validators | 100+ |
-| TPS | Up to ~65 transactions per second |
-| Finality | ~2 minutes (256 blocks), Ethereum finality via checkpoints |
+| Finality | ~2 min L2 finality; Ethereum finality via checkpoints (~30 min) |
 
 ## Running a Polygon PoS Node
 
-### Full Node
+### Production / mainnet
 
-A full node syncs and validates all blocks:
+- Operator docs: [docs.polygon.technology/pos/](https://docs.polygon.technology/pos/)
+- Bor source + releases: [`0xPolygon/bor`](https://github.com/0xPolygon/bor/releases)
+- Heimdall v2 source + releases: [`0xPolygon/heimdall-v2`](https://github.com/0xPolygon/heimdall-v2/releases)
+- Archive node: pass `--gcmode=archive` to Bor; expect multi-TB storage.
+
+### Local devnet (recommended for testing / investigation)
+
+Use `kurtosis-pos`:
 
 ```bash
-# Using Ansible (recommended)
-git clone https://github.com/maticnetwork/node-ansible
-cd node-ansible
-# Follow the setup guide for your environment
+# Prereqs: Kurtosis CLI + Docker
+kurtosis install    # if needed
+
+# Spin up a default PoS devnet
+kurtosis run github.com/0xPolygon/kurtosis-pos
+
+# Pass custom params via an args file
+kurtosis run github.com/0xPolygon/kurtosis-pos --args-file params.yaml
+
+# Tear down
+kurtosis clean
 ```
 
-### Archive Node
+Deployed components include an L1 chain, PoS contract deployment, multiple validators (Bor + Heimdall-v2), RPC endpoints, and optional Prometheus/Grafana/Panoptichain/Blockscout observability plus a transaction spammer for load testing. Consult the [kurtosis-pos configuration overview](https://github.com/0xPolygon/kurtosis-pos/blob/main/docs/docs/configuration/overview.md) for the current parameter schema (including Heimdall v1 vs v2 selection and mainnet-fork vs fresh-genesis modes).
 
-An archive node stores the complete state history:
-
-- Requires more storage (several TB)
-- Needed for historical queries and debugging
-- Use `--gcmode archive` flag when running Bor
+> `kurtosis-pos` is for **development and testing only** — not production.
 
 ## Staking and Validators
 
 ### Becoming a Validator
 
-1. Set up a full node (Heimdall + Bor)
-2. Stake POL tokens on the staking contract on Ethereum
-3. Minimum stake: 1 POL (but more is recommended for selection)
-4. Validators earn rewards from block production and checkpoint submission
+1. Run a full node (Heimdall v2 + Bor) synced to mainnet.
+2. Stake POL on the L1 staking contract.
+3. Validator slot auction determines the active set; minimum stake for the auction is published on-chain — see the staking dashboard / current docs for the live threshold.
+4. Validators earn rewards from block production and checkpoint submission; delegators earn a share of validator rewards.
 
 ### Delegating
 
-- Token holders can delegate their POL to validators
-- Delegators earn a share of the validator's rewards
-- Delegation is done through the Polygon staking portal
+- Token holders delegate POL to a validator through the Polygon staking portal.
+- Delegators share in validator rewards (minus commission).
 
 ## Bridging
 
 Polygon PoS has a native bridge for transferring assets between Ethereum and Polygon:
 
-- **PoS Bridge**: For most tokens (ERC-20, ERC-721, ERC-1155)
-- **Deposit**: Lock tokens on Ethereum, receive wrapped tokens on Polygon (~7-8 minutes)
-- **Withdraw**: Burn tokens on Polygon, claim on Ethereum after checkpoint (~30 min to 3 hours)
+- **PoS Bridge** — ERC-20 / ERC-721 / ERC-1155.
+- **Deposit** — lock on L1, receive wrapped on L2 (~7–8 min).
+- **Withdraw** — burn on L2, claim on L1 after checkpoint (~30 min to 3 h depending on checkpoint cadence).
 
-## POL Token Migration
+See `bridging.md` for the full flow and the `AggLayer` integration path.
 
-MATIC has been upgraded to POL as the native gas and staking token:
+## POL Token
 
-- POL is a 1:1 upgrade from MATIC
-- POL is used for gas fees on Polygon PoS
-- POL is used for staking and governance
-- The migration is handled automatically on most exchanges and wallets
+- POL replaced MATIC 1:1 as the native gas + staking token.
+- Used for gas fees, validator staking, and governance.
+- Migration is handled automatically by most exchanges and wallets; see the [POL migration docs](https://polygon.technology/pol-token) for edge cases.
+
+## References
+
+- `bor` (execution client): https://github.com/0xPolygon/bor
+- `heimdall-v2` (consensus): https://github.com/0xPolygon/heimdall-v2
+- `kurtosis-pos` (devnet toolkit, authoritative for current topology): https://github.com/0xPolygon/kurtosis-pos
+- Official Polygon PoS docs: https://docs.polygon.technology/pos/

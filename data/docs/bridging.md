@@ -1,32 +1,31 @@
 # Bridging Between Ethereum and Polygon
 
+> **Authoritative sources.** Legacy PoS bridge SDK: [`0xPolygon/matic.js`](https://github.com/0xPolygon/matic.js). AggLayer / unified bridge SDK (cross-chain, CDK-aware): [`0xPolygon/lxly.js`](https://github.com/0xPolygon/lxly.js). Bridge service (backend for AggLayer-connected chains): [`0xPolygon/zkevm-bridge-service`](https://github.com/0xPolygon/zkevm-bridge-service). AggLayer itself: [`agglayer/agglayer`](https://github.com/agglayer/agglayer) — note the former `0xPolygon/agglayer` repo is **archived**. Older references to `maticnetwork/maticjs-ethers` and `maticnetwork/pos-portal` are stale and should not be used.
+
 ## Overview
 
-The Polygon PoS Bridge allows you to transfer assets between Ethereum and Polygon PoS. It supports ERC-20, ERC-721, and ERC-1155 tokens.
+There are two bridging families depending on what you're moving and between which chains:
 
-## Bridge Types
+1. **PoS Bridge** — the classic Polygon PoS ↔ Ethereum bridge. Use for ERC-20 / ERC-721 / ERC-1155 movement between L1 Ethereum and Polygon PoS. Current SDK: `0xPolygon/matic.js`.
+2. **AggLayer Unified Bridge** — cross-chain messaging + liquidity across AggLayer-connected chains (CDK chains + PoS as they integrate). Current SDK: `0xPolygon/lxly.js` (pronounced "LxLy"). Preferred for anything CDK-facing or multi-chain.
 
-### PoS Bridge
+## PoS Bridge
 
-The primary bridge for Polygon PoS:
+### Deposit (Ethereum → Polygon PoS)
 
-- **Deposit (Ethereum to Polygon)**: Lock tokens on Ethereum, mint on Polygon. Takes ~7-8 minutes.
-- **Withdraw (Polygon to Ethereum)**: Burn tokens on Polygon, claim on Ethereum after checkpoint inclusion. Takes ~30 minutes to 3 hours.
+- Lock tokens on L1, mirrored/minted on Polygon.
+- Takes ~7–8 minutes end-to-end.
 
-### Third-Party Bridges
+### Withdraw (Polygon PoS → Ethereum)
 
-Several third-party bridges offer faster bridging:
+- Burn on Polygon, then claim on Ethereum **after checkpoint inclusion**.
+- End-to-end ~30 min to ~3 h depending on checkpoint cadence and L1 gas.
 
-- **Polygon Portal** (https://portal.polygon.technology) — Official bridge UI
-- **Hop Protocol** — Fast cross-chain transfers
-- **Across Protocol** — Optimistic bridge with fast finality
-- **Stargate (LayerZero)** — Omnichain liquidity transport
-
-## Using the PoS Bridge Programmatically
-
-### Deposit (Ethereum to Polygon)
+### Programmatic use with `matic.js`
 
 ```javascript
+// Use matic.js from the current 0xPolygon/matic.js repo.
+// Install: npm i @maticnetwork/maticjs @maticnetwork/maticjs-ethers ethers
 const { POSClient, use } = require("@maticnetwork/maticjs");
 const { Web3ClientPlugin } = require("@maticnetwork/maticjs-ethers");
 
@@ -37,72 +36,80 @@ await posClient.init({
   network: "mainnet",
   version: "v1",
   parent: { provider: ethereumProvider, defaultConfig: { from: userAddress } },
-  child: { provider: polygonProvider, defaultConfig: { from: userAddress } },
+  child:  { provider: polygonProvider,  defaultConfig: { from: userAddress } },
 });
 
-// Approve token spend
-const erc20Token = posClient.erc20(tokenAddress, true);
-const approveTx = await erc20Token.approve(amount);
-await approveTx.getReceipt();
-
-// Deposit
-const depositTx = await erc20Token.deposit(amount, userAddress);
-const receipt = await depositTx.getReceipt();
-console.log("Deposit tx hash:", receipt.transactionHash);
-// Tokens arrive on Polygon in ~7-8 minutes
+// Deposit ERC-20
+const erc20 = posClient.erc20(tokenAddress, /* isParent */ true);
+await (await erc20.approve(amount)).getReceipt();
+const dep = await erc20.deposit(amount, userAddress);
+const depReceipt = await dep.getReceipt();
+// Arrives on PoS ~7–8 min later
 ```
 
-### Withdraw (Polygon to Ethereum)
-
-Withdrawals are a two-step process:
+### Withdraw (two-step)
 
 ```javascript
-// Step 1: Burn tokens on Polygon
-const erc20Token = posClient.erc20(tokenAddress);
-const burnTx = await erc20Token.withdrawStart(amount);
-const burnReceipt = await burnTx.getReceipt();
-console.log("Burn tx hash:", burnReceipt.transactionHash);
+const erc20Child = posClient.erc20(tokenAddress);           // on Polygon
+const burn = await erc20Child.withdrawStart(amount);
+const burnReceipt = await burn.getReceipt();
 
-// Step 2: Wait for checkpoint inclusion (~30 min), then claim on Ethereum
-// Check if checkpoint has been included:
-const isCheckpointed = await posClient.isCheckPointed(burnReceipt.transactionHash);
-
-if (isCheckpointed) {
-  const exitTx = await erc20Token.withdrawExit(burnReceipt.transactionHash);
-  const exitReceipt = await exitTx.getReceipt();
-  console.log("Exit tx hash:", exitReceipt.transactionHash);
+// Wait for checkpoint (~30 min cadence)
+const ready = await posClient.isCheckPointed(burnReceipt.transactionHash);
+if (ready) {
+  const exit = await erc20Child.withdrawExit(burnReceipt.transactionHash);
+  await exit.getReceipt();
 }
 ```
 
-## Bridging Native POL/MATIC
+Always check the current [`0xPolygon/matic.js`](https://github.com/0xPolygon/matic.js) README — the package names, `version` values, and plugin patterns get bumped with each release.
 
-To bridge native POL (MATIC) tokens:
+## AggLayer Unified Bridge (`lxly.js`)
 
-1. Use the Polygon Portal at https://portal.polygon.technology
-2. Connect your wallet
-3. Select the amount and direction
-4. Approve and confirm the transaction
+For chains connected to AggLayer (Polygon CDK chains and, over time, PoS), bridging uses the unified bridge + ZK-proof-backed settlement instead of checkpointed PoS exits. `lxly.js` is the current TypeScript client:
+
+```javascript
+// npm i @0xpolygon/lxly-client (or consult the current README for the package name)
+// See https://github.com/0xPolygon/lxly.js for install + API, which evolves rapidly.
+```
+
+Typical use cases:
+- Bridging between two CDK chains via the unified bridge.
+- Claiming tokens or messages across AggLayer-connected chains.
+- Building dApps that abstract "which chain am I on" away from the user.
+
+Backends: [`0xPolygon/zkevm-bridge-service`](https://github.com/0xPolygon/zkevm-bridge-service) exposes the REST/gRPC endpoints that indexers and wallets query for Merkle proofs and deposit claim data.
+
+## End-user UIs
+
+- **Polygon Portal** — https://portal.polygon.technology — official bridge UI for PoS + AggLayer.
+- **Third-party bridges** — Hop, Across, Stargate/LayerZero — useful for fast paths that bypass the native exit-delay, with their own security assumptions.
+
+## Bridging Native POL / MATIC
+
+1. Use the Polygon Portal at https://portal.polygon.technology.
+2. Connect your wallet.
+3. Select amount and direction.
+4. Approve + confirm.
+
+POL has replaced MATIC 1:1 as the native staking/gas asset on PoS; most wallets and exchanges handle the migration automatically.
 
 ## Bridge Security
 
-- The PoS Bridge is secured by the validator set (100+ validators)
-- Deposits are confirmed after sufficient Ethereum block confirmations
-- Withdrawals require checkpoint inclusion on Ethereum
-- The bridge contracts are audited and battle-tested
+- **PoS bridge** — secured by the PoS validator set; withdrawals finalize after Ethereum checkpoint inclusion.
+- **AggLayer unified bridge** — secured by ZK validity proofs plus the **pessimistic proof** safety property (no chain can over-withdraw more than it has deposited, even if its prover misbehaves). See `agglayer.md` and [`agglayer/agglayer`](https://github.com/agglayer/agglayer) for internals.
 
 ## Common Issues
 
-### Deposit Not Showing on Polygon
-- Wait at least 7-8 minutes for the deposit to be processed
-- Check the transaction on Etherscan to confirm it was successful
-- Use the Polygon Portal to track the status
+### Deposit not showing on Polygon
+- Wait ≥ 7–8 minutes; check the L1 transaction on Etherscan.
+- Track status in Polygon Portal.
 
-### Withdrawal Taking Too Long
-- Withdrawals require a checkpoint to be submitted to Ethereum (~30 min)
-- After checkpoint, you still need to submit the exit transaction on Ethereum
-- Check checkpoint status at https://portal.polygon.technology
+### Withdrawal stuck
+- Withdrawals require a checkpoint on L1 (~30 min cadence) before the exit claim becomes submittable.
+- After checkpoint, submit the exit transaction on L1 (pays L1 gas).
+- Monitor checkpoint inclusion in Polygon Portal.
 
-### Gas Fees
-- Deposits require Ethereum gas (paid in ETH)
-- Withdrawals require gas on both Polygon (burn) and Ethereum (exit claim)
-- Ethereum gas for the exit transaction can be significant during congestion
+### Gas fees
+- Deposits: L1 ETH gas.
+- Withdrawals: POL (burn on PoS) + ETH (exit claim on L1). During L1 congestion the exit claim can dominate cost.
