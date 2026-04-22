@@ -56,6 +56,22 @@ first (or invoke that skill and retry).
 - Never invent PRs or bodies — only what is in the JSONL files.
 - Never call the GitHub API from this skill (that's `refresh-knowledge`'s job).
 
+## Freshness policy (non-negotiable)
+
+This skill is bound by the ≤ 30-day freshness rule in `FRESHNESS_POLICY.md`.
+
+1. **Check the JSONL cursor.** If the most recent PR/commit in the data is older than 30
+   days, the user's corpus is stale. Say so explicitly and prompt the user to run
+   `refresh-knowledge` before relaying the summary — do not silently present old data as
+   "recent".
+2. **Default `--since` window.** The skill's default of `14d` keeps results inside the
+   freshness window. If the user asks for a longer window (`--since 90d`), still produce
+   the summary but open with an explicit note that results beyond 30 days may no longer
+   reflect the current state of Bor / Heimdall-v2.
+3. **Zero matches ≠ nothing happened.** If the window is within freshness and returns
+   zero matches, say "no merged PRs in this window matched" — never paper over with a
+   training-knowledge guess about recent upgrades.
+
 ## Related skills
 
 - `refresh-knowledge` — populates the NDJSON this skill reads.

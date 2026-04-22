@@ -114,6 +114,25 @@ Just ask Claude Code questions. The plugin auto-routes to the right skill:
 
 See `FAQ_COVERAGE.md` for the full catalogue of questions the FAQ skill is tuned for.
 
+### Freshness policy
+
+Every answer produced by this plugin is bound by the **≤ 30-day freshness rule** documented
+in `FRESHNESS_POLICY.md`:
+
+- Static FAQ answers must be grounded in bundled docs whose upstream repos have been pushed
+  within the last 30 days, **or** the skill must explicitly disclose that the answer cannot
+  be freshness-verified.
+- PR / commit summaries must flag windows where the corpus is older than 30 days and prompt
+  a `refresh-knowledge` run.
+- When information is unavailable at the required freshness, the skills **refuse to guess**
+  — they surface the uncertainty to the responder instead of fabricating a confident-looking
+  but potentially stale answer.
+
+If you edit `data/docs/*.md` or add a new doc, update its **Authoritative sources** callout
+with currently-maintained repos (`pushed_at` ≤ 30 days). Before tagging a plugin release,
+audit every repo URL in the corpus for staleness — `FRESHNESS_POLICY.md` lists the canonical
+and explicitly-deprecated references.
+
 ---
 
 ## Developer workflow

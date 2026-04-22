@@ -34,6 +34,24 @@ A concrete trigger list lives in `FAQ_COVERAGE.md`. Representative prompts:
 - "How does EIP-1559 work on Polygon?"
 - "Has MATIC been replaced by POL?"
 
+## Freshness policy (non-negotiable)
+
+This plugin follows the **≤ 30-day freshness rule** documented in `FRESHNESS_POLICY.md` at
+the repo root. Before producing any answer from this skill:
+
+1. **Every answer must be grounded in a source whose upstream reference is ≤ 30 days old**
+   (repo `pushed_at`, PR/commit date, or blog post date), OR must explicitly disclose that
+   freshness cannot be verified.
+2. **Never fabricate currency.** If the retrieved chunk names a specific version, address,
+   fee, APY, minimum stake, parameter, or API shape, and the chunk does not itself cite a
+   fresh upstream, flag the uncertainty in your answer rather than relaying it cleanly.
+3. **Prefer "I don't know, check <X>" over a plausible-sounding guess.** First responders
+   relay these answers to real users across Slack / Telegram / Discord. A confident wrong
+   answer propagates; a hedge prompts verification.
+
+Read `FRESHNESS_POLICY.md` for the full rule, the list of currently-authoritative repos,
+and the list of deprecated references that must not be cited as authoritative.
+
 ## Workflow
 
 1. **Retrieve** top matches from the doc corpus:
@@ -43,15 +61,27 @@ A concrete trigger list lives in `FAQ_COVERAGE.md`. Representative prompts:
    The script prints a JSON array. Each element has `source` (relative path under
    `data/docs/`), `text` (the chunk), and `score` (TF-IDF cosine similarity).
 
-2. **Compose the answer**. Use only content from the retrieved chunks. If the chunks
+2. **Check freshness signals in the retrieved chunks**:
+   - The doc's opening **Authoritative sources** callout (if present) names the upstream
+     repos. If a chunk quotes specifics (addresses, parameters, minimum-stake values) that
+     are not traceable to one of those authoritative repos, downgrade confidence.
+   - If the chunk references `maticnetwork/polygon-edge`, legacy `maticnetwork/heimdall`,
+     `0xPolygon/agglayer` (archived), or any repo called out as deprecated in
+     `FRESHNESS_POLICY.md`, **do not cite it as authoritative** — use the citation only to
+     warn the user that the tooling is deprecated.
+   - For time-sensitive facts (versions, addresses, fees, APY, minimum stakes, parameter
+     values, API shapes): if the chunk is not dated and its upstream repo's recency is not
+     verifiable from what you have, say so in the answer.
+
+3. **Compose the answer**. Use only content from the retrieved chunks. If the chunks
    don't actually answer the question, say so explicitly — do not fall back to training
    knowledge and present it as if it came from the docs.
 
-3. **Cite**. Every factual claim must be followed by the `data/docs/<file>.md` path it
+4. **Cite**. Every factual claim must be followed by the `data/docs/<file>.md` path it
    came from. When responders copy/paste into Slack/Telegram/Discord, the citation travels
    with the answer.
 
-4. **Tune `--k` when needed**. For narrow questions (single-doc answer) `k=3` is enough.
+5. **Tune `--k` when needed**. For narrow questions (single-doc answer) `k=3` is enough.
    For cross-cutting questions that span multiple docs (e.g. bridging + gas + POL), try
    `k=5` or `k=8`.
 
